@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mach Groove — All songs aboard</title>
+  <meta name="description" content="Your playlists shouldn't be stuck in one place, or one format. Mach Groove moves them between services in the format you pick and reports what landed, track by track. Coming to the App Store.">
+  <meta name="theme-color" content="#101026">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Groove">
+  <meta property="og:title" content="Mach Groove — All songs aboard">
+  <meta property="og:description" content="Playlists with places to go. No strings attached. Coming to iOS, Halloween 2026.">
+  <meta property="og:url" content="https://mach-groove.app/">
+  <meta property="og:image" content="https://mach-groove.app/assets/og-image.png">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css?v=20260910c">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="starfield" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="./" aria-label="Mach Groove home">
+        <img class="brand__mark" src="assets/logo-circle.png" alt="" width="40" height="40">
+        <span class="brand__word">MACH GROOVE</span>
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="nav__menu" id="nav-menu" aria-label="Primary">
+        <ul class="nav__links">
+          <li><a href="#features" data-section="features">Features</a></li>
+          <li><a href="#how" data-section="how">Mission</a></li>
+          <li><a href="#socials" data-section="socials">Socials</a></li>
+          <li><a href="support/">Support</a></li>
+        </ul>
+        <a class="nav__cta mono" href="#launch-alerts">GET LAUNCH ALERTS</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow mono">
+            <span class="status-dot" aria-hidden="true"></span>
+            SYSTEMS NOMINAL · T-MINUS HALLOWEEN 2026
+          </p>
+          <h1 id="hero-title" class="hero__title">
+            All songs aboard.
+          </h1>
+          <p class="hero__lede">
+            Your playlists shouldn't be stuck in one place, or one format. Mach Groove moves
+            them between services in the format you pick and reports what landed, track by track.
+          </p>
+
+          <div class="hero__cta">
+            <!-- Text-only until the app is live: Apple licenses the Apple logo / App Store
+                 badge only for apps already on the App Store. Swap in the official
+                 "Download on the App Store" badge at launch. -->
+            <span class="badge-soon">
+              <span class="badge-soon__dot" aria-hidden="true"></span>
+              <span class="badge-soon__text">
+                <span class="badge-soon__small mono">COMING SOON</span>
+                <span class="badge-soon__big">iOS · App Store</span>
+              </span>
+            </span>
+          </div>
+
+          <ul class="service-strip" aria-label="Supported services">
+            <li class="service service--spotify"><img class="service__logo" src="assets/spotify-icon.svg" alt="" width="22" height="22">Spotify</li>
+            <li class="service service--apple"><img class="service__logo" src="assets/apple-music-icon.svg" alt="" width="22" height="22">Apple Music</li>
+            <li class="service service--youtube"><img class="service__logo service__logo--yt" src="assets/youtube-icon.png" alt="" width="24" height="24">YouTube Music</li>
+          </ul>
+        </div>
+
+        <!-- Terminal mission log -->
+        <div class="hero__visual">
+          <div class="terminal" role="img" aria-label="Animated mission log showing a playlist being beamed from one service to another: scanning tracks, targets locked, pilot resolving one unresolved track, delivery verified.">
+            <div class="terminal__bar" aria-hidden="true">
+              <span class="terminal__light terminal__light--red"></span>
+              <span class="terminal__light terminal__light--amber"></span>
+              <span class="terminal__light terminal__light--green"></span>
+              <span class="terminal__title mono">MISSION LOG · SEQ-0042</span>
+            </div>
+
+            <div class="beam" aria-hidden="true">
+              <div class="beam__node beam__node--origin">
+                <img class="beam__logo" src="assets/spotify-icon.svg" alt="" width="34" height="34">
+                <span class="beam__label mono">SPOTIFY</span>
+              </div>
+              <div class="beam__track">
+                <span class="beam__line"></span>
+                <span class="beam__pulse"></span>
+                <span class="beam__pulse beam__pulse--2"></span>
+                <!-- 8-bit rocket — same 14×7 pixel map as the app's RocketGlyph (IV-0019) -->
+              <svg class="beam__rocket" viewBox="0 0 48 32" shape-rendering="crispEdges" aria-hidden="true">
+                <!-- fins -->
+                <rect x="21" y="5.5" width="3" height="3" fill="#64d2ff"/><rect x="21" y="8.5" width="6" height="3" fill="#64d2ff"/>
+                <rect x="21" y="20.5" width="6" height="3" fill="#64d2ff"/><rect x="21" y="23.5" width="3" height="3" fill="#64d2ff"/>
+                <!-- body + nose, tapered corners -->
+                <rect x="24" y="11.5" width="21" height="9" fill="#eef0ff"/>
+                <rect x="45" y="14.5" width="3" height="3" fill="#eef0ff"/>
+                <rect x="42" y="11.5" width="3" height="3" fill="#101026"/><rect x="42" y="17.5" width="3" height="3" fill="#101026"/>
+                <!-- porthole -->
+                <rect x="33" y="14.5" width="3" height="3" fill="#64d2ff"/>
+                <!-- exhaust: lips + tail, then two alternating tip frames -->
+                <rect x="21" y="11.5" width="3" height="3" fill="#fe8638"/><rect x="21" y="17.5" width="3" height="3" fill="#fe8638"/>
+                <rect x="18" y="14.5" width="6" height="3" fill="#fe8638"/>
+                <g class="beam__flame beam__flame--short"><rect x="15" y="14.5" width="3" height="3" fill="#ffd60a"/></g>
+                <g class="beam__flame beam__flame--long"><rect x="15" y="14.5" width="3" height="3" fill="#fe8638"/><rect x="12" y="14.5" width="3" height="3" fill="#ffd60a"/></g>
+              </svg>
+              </div>
+              <div class="beam__node beam__node--dest">
+                <img class="beam__logo" src="assets/apple-music-icon.svg" alt="" width="34" height="34">
+                <span class="beam__label mono">APPLE MUSIC</span>
+              </div>
+            </div>
+
+            <pre class="terminal__log mono" id="mission-log" aria-hidden="true"></pre>
+          </div>
+          <img class="hero__logo" src="assets/logo-circle.png" alt="" width="500" height="500" aria-hidden="true">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="features" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <p class="eyebrow mono">PAYLOAD MANIFEST</p>
+        <h2 id="features-title" class="section-title">Moves your music. Keeps the receipts.</h2>
+
+        <div class="feature-grid">
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">🎛️</div>
+            <h3 class="card__title">Pick your format</h3>
+            <p>Move a playlist as songs, or rebuild it as music videos, live performances, or karaoke.</p>
+            <p>Pick the format before launch. Mach Groove finds the right version on the other side.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">🛰️</div>
+            <h3 class="card__title">Cross-service transfers</h3>
+            <p>Beam any playlist from one service to another, in either direction.</p>
+            <p>Pick the cargo, pick the destination, and launch the sequence.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">🎯</div>
+            <h3 class="card__title">No song left behind</h3>
+            <p>When a track can't be matched, the transfer holds instead of guessing.</p>
+            <p>You pick the replacement, then deliver. Your call, not an algorithm's.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">📦</div>
+            <h3 class="card__title">Honest transfer counts</h3>
+            <p>When the transfer finishes, Mach Groove checks the destination and counts what actually arrived.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <p class="eyebrow mono">BEAM SEQUENCE</p>
+        <h2 id="how-title" class="section-title">Connect. Pick. Launch.</h2>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num mono">01</span>
+            <h3 class="step__title">Connect</h3>
+            <p>Connect to your services. No passwords stored, no library touched until you launch.</p>
+          </li>
+          <li class="step">
+            <span class="step__num mono">02</span>
+            <h3 class="step__title">Pick</h3>
+            <p>Choose a playlist, a destination, and a format.</p>
+          </li>
+          <li class="step">
+            <span class="step__num mono">03</span>
+            <h3 class="step__title">Launch</h3>
+            <p>Start the sequence and watch it go. If a track can't be matched, you choose the replacement. Nothing moves without you.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ SOCIALS + LAUNCH ALERTS ============ -->
+    <section class="socials" id="socials" aria-labelledby="socials-title">
+      <div class="container socials__grid">
+        <div>
+          <p class="eyebrow mono">SOCIALS · ON THE AIR</p>
+          <h2 id="socials-title" class="section-title">Come see what's shaking.</h2>
+          <!-- Live handles (IV-0028). A chip stays aria-disabled until its profile exists. -->
+          <ul class="social-list">
+            <li><a class="social" href="https://www.instagram.com/machgroove/" target="_blank" rel="noopener noreferrer me" data-platform="instagram"><span class="social__dot" aria-hidden="true"></span><span class="mono">INSTAGRAM</span><span class="social__handle">@machgroove</span></a></li>
+            <li><a class="social" href="https://www.threads.com/@machgroove" target="_blank" rel="noopener noreferrer me" data-platform="threads"><span class="social__dot" aria-hidden="true"></span><span class="mono">THREADS</span><span class="social__handle">@machgroove</span></a></li>
+            <li><a class="social" href="https://x.com/machgroove" target="_blank" rel="noopener noreferrer me" data-platform="x"><span class="social__dot" aria-hidden="true"></span><span class="mono">X</span><span class="social__handle">@machgroove</span></a></li>
+            <li><a class="social" href="https://www.tiktok.com/@machgroove" target="_blank" rel="noopener noreferrer me" data-platform="tiktok"><span class="social__dot" aria-hidden="true"></span><span class="mono">TIKTOK</span><span class="social__handle">@machgroove</span></a></li>
+            <li><a class="social" href="https://www.facebook.com/profile.php?id=61594497351598" target="_blank" rel="noopener noreferrer me" data-platform="facebook"><span class="social__dot" aria-hidden="true"></span><span class="mono">FACEBOOK</span><span class="social__handle">Mach Groove</span></a></li>
+            <!-- Fanbase: signup pending (new flow). Stays dimmed until the profile exists. -->
+            <li><a class="social" href="#" aria-disabled="true" data-platform="fanbase"><span class="social__dot" aria-hidden="true"></span><span class="mono">FANBASE</span><span class="social__handle">soon</span></a></li>
+          </ul>
+        </div>
+
+        <form class="alerts" id="launch-alerts" action="" method="post" novalidate aria-labelledby="alerts-title">
+          <p class="eyebrow mono">LAUNCH ALERTS</p>
+          <h3 id="alerts-title" class="alerts__title">Get pinged when the countdown hits zero.</h3>
+          <p class="alerts__lede">One email at launch, maybe one before. No spam, no selling your address.</p>
+          <div class="alerts__row">
+            <label class="sr-only" for="alerts-email">Email address</label>
+            <input class="alerts__input mono" id="alerts-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="pilot@example.com" required>
+            <button class="alerts__btn mono" type="submit">NOTIFY ME</button>
+          </div>
+          <!-- Android demand signal: no date promised, just a count to decide by. -->
+          <label class="alerts__check">
+            <input type="checkbox" name="android" value="yes">
+            <span class="alerts__checkbox" aria-hidden="true"></span>
+            <span>I'm on Android — tell me when it's on the Play Store too</span>
+          </label>
+          <!-- Honeypot: bots fill every field; humans never see this one. -->
+          <input class="alerts__hp" type="text" name="callsign" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="alerts__status mono" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer">
+      <div class="footer__brand">
+        <img src="assets/logo-circle.png" alt="" width="28" height="28">
+        <span class="mono">MACH GROOVE</span>
+      </div>
+      <ul class="footer__links">
+        <li><a href="support/">Support</a></li>
+        <li><a href="privacy/">Privacy</a></li>
+        <li><a href="mailto:hello@mach-groove.app">Contact</a></li>
+      </ul>
+      <p class="footer__copy mono">© <span id="year">2026</span> LMDx Tech · All systems nominal.</p>
+      <p class="footer__legal">Spotify is a trademark of Spotify AB. Apple Music is a trademark of Apple Inc. YouTube and YouTube Music are trademarks of Google LLC. Mach Groove is an independent product and is not affiliated with, endorsed by, or sponsored by Spotify, Apple, or Google.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=20260910c" defer></script>
+</body>
+</html>
