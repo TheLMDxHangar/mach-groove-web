@@ -13,7 +13,7 @@ own. Raw input for the "head of marketing" chat prompt. Add as we go.
 - Differentiators to lead with: honest transfer counts (47/48 means 47/48); pilot resolves misses — no song left behind; songs vs music-video modes.
 
 ## Decisions needed from marketing
-- [ ] Email capture tooling for launch alerts (Formspree / Buttondown / Mailchimp). Site form is built; `action` is blank until chosen. Payload is `{email, platforms:["ios"|"ios","android"], source}` + honeypot field `callsign`.
+- [x] Email capture: DECIDED (2026-09-08) — own endpoint on mach-groove-api + Firestore (IV-0020, blocked on IV-0008 Terraform). Launch email sent once at launch from hello@ via Resend/Buttondown import. Site form posts `{email, platforms, source}` + honeypot `callsign`.
 - [ ] Android demand: the form has an "I'm on Android" checkbox (2026-09-08). Count it before committing to a Play Store date. Android = full Kotlin/Compose rewrite, est. 4–6 months solo part-time after iOS launch; Google requires 12 testers × 14 days closed test before production for new accounts. No Play Store "coming soon" on the site until a start date exists.
 - [x] Social handles LIVE (2026-09-10), all @machgroove under social@mach-groove.app:
   - Instagram https://www.instagram.com/machgroove/
@@ -23,12 +23,13 @@ own. Raw input for the "head of marketing" chat prompt. Add as we go.
   - Facebook https://www.facebook.com/profile.php?id=61594497351598 (set a vanity username later for a clean URL)
   - Fanbase: signup pending (new flow) — chip dimmed on site
   - YouTube channel: not created yet; chip removed from site until it exists
-- [ ] Addresses (all Workspace aliases on Dom's user, IV-0028): social@ = signup email for every social account; hello@ = site contact; support@ = App Store Connect support. Domain added as a User alias domain, TXT-verified.
+- [x] Addresses LIVE 2026-09-11 (IV-0028): social@ (platform identity), hello@ (humans + launch-email sender), support@ (App Store Connect), ops@ (machine mail, receive-only). Gmail label tree Mach Groove/{Social,Ops,Support}. SPF/DKIM/DMARC already published.
 - [ ] Launch-badge swap: replace the text "coming soon" chip with Apple's official App Store badge the day the app is approved.
 - [ ] YouTube Music mark: only via Google's Brand Use Request Form (brand.youtube). Decide if worth requesting for launch materials.
 - [ ] OG / social share image: currently the 500px logo. Needs a proper 1200×630 card with tagline.
 - [ ] Press kit: logo files, screenshots, one-paragraph blurb, founder bio.
-- [ ] Domain email + DNS ownership (mach-groove.app on GitHub Pages).
+- [x] Site LIVE at https://mach-groove.app (2026-09-11), GitHub Pages, HTTPS enforced.
+- Publishing: Metricool (free) decided for IV-0029; drafts live in the Notion 'Mach Groove Content Calendar'; head-of-marketing prompt in docs/HEAD-OF-MARKETING-PROMPT.md.
 
 ## Content the site already has (reuse, don't rewrite)
 - TAGLINE TRIO (locked 2026-09-10):
