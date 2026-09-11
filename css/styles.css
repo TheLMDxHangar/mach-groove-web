@@ -341,7 +341,15 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 .terminal__log {
   margin: 0;
   padding: 1rem 1.1rem 1.25rem;
-  min-height: 15.5em;
+  /* B-0039: FIXED height, not min-height — the box never grows as lines type
+     in or shrinks when the loop restarts, so the hero stops bobbing. Sized
+     for ~11 rendered rows: 9 kept lines plus two that wrap on desktop. New
+     lines push old ones up like a real terminal. */
+  height: 17.5em;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   font-size: .8rem;
   line-height: 1.75;
   white-space: pre-wrap;
@@ -349,6 +357,7 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   color: var(--text-dim);
   letter-spacing: .02em;
 }
+.terminal__log .log-line { flex: none; }
 .log-line { display: block; }
 .log-line--info    { color: var(--mach-blue); }
 .log-line--success { color: var(--mach-green); }
@@ -666,6 +675,7 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .status-dot, .badge-soon__dot, .hero__logo, .beam__pulse, .beam__rocket, .beam__flame, .cursor { animation: none; }
+  .terminal__log { height: auto; }   /* static full log — never clip it */
   .beam__rocket { left: 50%; opacity: 1; }
   .beam__flame--long { opacity: 0; }
   .card, .card:hover { transform: none; transition: none; }
