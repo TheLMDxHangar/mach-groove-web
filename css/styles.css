@@ -438,6 +438,13 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
    -------------------------------------------------------------------------- */
 .features { padding: clamp(3rem, 7vw, 5.5rem) 0; }
 
+/* Same-service format flip (#flip) — lede sits between title and cards. */
+.flip__lede {
+  color: var(--text-dim);
+  max-width: 46ch;
+  margin: 0 0 2rem;
+}
+
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
