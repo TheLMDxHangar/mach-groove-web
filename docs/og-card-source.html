@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; position: relative;
+         background: radial-gradient(1100px 700px at 78% 30%, #1c1c44 0%, #161636 45%, #101026 100%);
+         font-family: "Space Grotesk", sans-serif; color: #eef0ff; }
+  #stars { position: absolute; inset: 0; }
+  .star { position: absolute; border-radius: 50%; background: #eef0ff; }
+  .wrap { position: absolute; inset: 0; display: flex; align-items: center; gap: 72px; padding: 0 96px; }
+  .logo { width: 300px; height: 300px; flex: none; border-radius: 50%;
+          box-shadow: 0 0 90px rgba(100,210,255,.35), 0 0 30px rgba(255,45,255,.25); }
+  .eyebrow { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 22px;
+             letter-spacing: .28em; color: rgb(100,210,255); margin-bottom: 26px; }
+  .eyebrow .dot { color: rgb(0,255,120); }
+  h1 { font-weight: 700; font-size: 96px; line-height: 1.02; letter-spacing: -.01em; margin-bottom: 30px; }
+  .sub { font-family: "JetBrains Mono", monospace; font-size: 21px; color: #a9adc9; letter-spacing: .08em; white-space: nowrap; }
+  .sub strong { color: rgb(254,134,56); font-weight: 600; }
+  .beam { position: absolute; left: 0; right: 0; bottom: 54px; height: 2px;
+          background: linear-gradient(90deg, transparent 4%, rgba(100,210,255,.55) 30%, rgba(255,45,255,.55) 70%, transparent 96%); }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="wrap">
+  <img class="logo" src="http://localhost:8765/assets/logo-circle.png" width="300" height="300" alt="">
+  <div>
+    <div class="eyebrow"><span class="dot">●</span> MACH GROOVE</div>
+    <h1>All songs<br>aboard.</h1>
+    <div class="sub">COMING TO iOS · <strong>T-MINUS HALLOWEEN 2026</strong></div>
+  </div>
+</div>
+<div class="beam"></div>
+<script>
+  const s = document.getElementById('stars');
+  let seed = 42;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 140; i++) {
+    const d = document.createElement('div');
+    d.className = 'star';
+    const size = rnd() < .85 ? 1.5 : 2.5;
+    d.style.cssText = `left:${rnd()*1200}px;top:${rnd()*630}px;width:${size}px;height:${size}px;opacity:${.25+rnd()*.6}`;
+    s.appendChild(d);
+  }
+</script>
+</body>
+</html>
