@@ -527,17 +527,24 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 .social .mono { font-size: .7rem; letter-spacing: .1em; }
 .social__handle { color: var(--text-faint); font-size: .8rem; }
-.social__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mach-blue); box-shadow: 0 0 8px var(--mach-blue); }
+/* Brand glyphs (assets/social/*.svg, Simple Icons) drawn as masks.
+   All white, no effects — monochrome is the one treatment every
+   platform's brand guidelines allow. */
+.social__icon {
+  width: 15px; height: 15px; flex: none;
+  background: var(--text);
+  -webkit-mask: var(--social-glyph) center / contain no-repeat;
+  mask: var(--social-glyph) center / contain no-repeat;
+}
 .social:hover { text-decoration: none; border-color: var(--panel-border); box-shadow: 0 0 18px -6px var(--mach-blue-a); transform: translateY(-1px); }
 /* Not wired yet: dim it and kill the hand cursor so nobody thinks it's broken. */
 .social[aria-disabled="true"] { opacity: .55; cursor: default; }
 .social[aria-disabled="true"]:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,.1); }
-.social[data-platform="instagram"] .social__dot { background: var(--mach-pink); box-shadow: 0 0 8px var(--mach-pink); }
-.social[data-platform="youtube"]   .social__dot { background: var(--mach-red);  box-shadow: 0 0 8px var(--mach-red); }
-.social[data-platform="tiktok"]    .social__dot { background: var(--mach-green); box-shadow: 0 0 8px var(--mach-green); }
-.social[data-platform="threads"]   .social__dot { background: var(--text);      box-shadow: 0 0 8px var(--text); }
-.social[data-platform="facebook"]  .social__dot { background: var(--mach-blue); box-shadow: 0 0 8px var(--mach-blue); }
-.social[data-platform="fanbase"]   .social__dot { background: var(--mach-purple); box-shadow: 0 0 8px var(--mach-purple); }
+.social[data-platform="instagram"] .social__icon { --social-glyph: url("../assets/social/instagram.svg"); }
+.social[data-platform="threads"]   .social__icon { --social-glyph: url("../assets/social/threads.svg"); }
+.social[data-platform="x"]         .social__icon { --social-glyph: url("../assets/social/x.svg"); }
+.social[data-platform="tiktok"]    .social__icon { --social-glyph: url("../assets/social/tiktok.svg"); }
+.social[data-platform="facebook"]  .social__icon { --social-glyph: url("../assets/social/facebook.svg"); }
 
 .alerts {
   position: relative;
