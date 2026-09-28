@@ -59,14 +59,15 @@
     <div class="container">
       <p class="eyebrow mono">FLIGHT RULES</p>
       <h1>Privacy Policy</h1>
-      <p class="mono" style="font-size:.75rem;color:var(--text-faint)">EFFECTIVE DATE: SEPTEMBER 11, 2026 · LAST UPDATED: SEPTEMBER 25, 2026</p>
+      <p class="mono" style="font-size:.75rem;color:var(--text-faint)">EFFECTIVE DATE: SEPTEMBER 11, 2026 · LAST UPDATED: SEPTEMBER 28, 2026</p>
 
       <p>Mach Groove is an iOS app by LMDx Tech that moves playlists between Spotify, Apple Music, YouTube Music, and YouTube — as songs, music videos, or live performances. Same playlist, different vibe. This policy says plainly what we collect, where it lives, how long we keep it, and how to delete it. The short version: we collect almost nothing, we track nothing, and we never sell anything.</p>
 
       <h2 id="what-we-collect">What we collect</h2>
-      <p>When you sign in with Google, we collect exactly two things:</p>
+      <p>When you sign in with Apple or Google, we collect only what your account needs:</p>
       <ul>
-        <li><strong>Your email address</strong> — so your Mach Groove account exists and we can tell it apart from everyone else's.</li>
+        <li><strong>Your email address</strong> — so your Mach Groove account exists and we can tell it apart from everyone else's. (With Sign in with Apple, this can be Apple's private relay address.)</li>
+        <li><strong>Your name and profile picture link</strong>, if your sign-in shares them — to label your account in the app.</li>
         <li><strong>A user ID</strong> (a random identifier created for your account when you sign in) — how the app proves to our servers that a request is really yours.</li>
       </ul>
       <p>That's the whole list. Your playlists and transfers stay on your phone — we don't keep a copy of what you transferred or what's in it.</p>
@@ -82,7 +83,7 @@
       <h2 id="where-your-data-lives">Where your data lives</h2>
       <ul>
         <li><strong>On your device:</strong> the sign-in tokens for your connected music services (in the iOS Keychain), your transfer history, lifetime stats, transfer logs, and preferences like theme. None of this leaves your phone unless you choose to send a log to support.</li>
-        <li><strong>On our servers:</strong> your email and user ID, and nothing else.</li>
+        <li><strong>On our servers:</strong> your email, name, profile picture link, and user ID, and nothing else.</li>
         <li><strong>In transit only:</strong> connecting Spotify routes its sign-in exchange through our server so secrets never ship inside the app — the token passes through and is not stored there.</li>
         <li><strong>Not personal data:</strong> the app reports anonymous song-catalog facts (for example, "this Spotify track ID and this Apple Music ID are the same recording") to make everyone's matches faster. These are facts about songs, not about you.</li>
       </ul>
@@ -98,11 +99,32 @@
       <h2 id="youtube-api">YouTube API Services</h2>
       <p>Mach Groove uses YouTube API Services. By using the YouTube features you also agree to the <a href="https://www.youtube.com/t/terms" rel="noopener">YouTube Terms of Service</a>, and Google's handling of your data is described in the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. Mach Groove caches YouTube API data (like search results) for no more than 30 days, keyed to songs — not to you. You can revoke Mach Groove's access to your Google/YouTube data at any time at <a href="https://myaccount.google.com/permissions" rel="noopener">myaccount.google.com/permissions</a>.</p>
 
+      <h2 id="google-user-data">How Mach Groove uses Google user data</h2>
+      <p>Mach Groove asks Google for two kinds of access, and uses each only for the feature you asked for:</p>
+      <ul>
+        <li><strong>Sign in with Google</strong> (your email address, name, and profile picture, plus a Google account identifier): used only to create your Mach Groove account, keep you signed in, and show who's signed in. Stored on our servers until you delete your account.</li>
+        <li><strong>YouTube</strong> (manage your YouTube account): used only when you start a transfer, to (1) read your own YouTube playlists and the songs in the one you choose, (2) search YouTube's catalog for each song you're moving and check it can play, and (3) create a new playlist in your account and add the songs you chose. That's all we do with it — we don't upload, delete, comment, rate, subscribe, or change anything else on your account.</li>
+      </ul>
+      <p>YouTube data stays on your phone: search results are cached on the device for no more than 30 days and then deleted, and YouTube data is never stored on our servers. We don't sell Google user data, use it for advertising, share it with third parties, or use it to train AI or machine-learning models. People don't read it, except with your permission (for example, a log you choose to send to support), for security, or where the law requires.</p>
+      <p>Mach Groove's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+      <h2 id="data-protection">How we protect your data</h2>
+      <ul>
+        <li><strong>Encrypted in transit:</strong> every connection between the app, our servers, and Google, Apple, and your music services uses HTTPS (TLS).</li>
+        <li><strong>On your phone:</strong> sign-in tokens for your connected services live in the iOS Keychain, readable only by Mach Groove, only while your phone is unlocked, and never synced to other devices. Google's sign-in session is kept by Google's own Sign-In library, also in the Keychain.</li>
+        <li><strong>On our servers:</strong> our database runs on Google Cloud and is encrypted at rest. Our server reaches it with a Google-managed identity instead of a stored password, and that identity holds only the permissions it needs. Secrets are kept in Google Secret Manager, never inside the app.</li>
+        <li><strong>Every request is checked:</strong> our server only answers requests carrying a valid sign-in token for your account and proof that they come from the genuine Mach Groove app (Firebase App Check). You can only ever read or delete your own account.</li>
+        <li><strong>Limited access:</strong> only LMDx administrators can reach our production systems, and every administrator account requires two-step verification.</li>
+        <li><strong>Minimal by design:</strong> we keep as little as possible (see above), and deleting your account removes it.</li>
+      </ul>
+      <p>If a security incident ever affected your data, we'd tell you and the relevant authorities as the law requires.</p>
+
       <h2 id="retention">How long we keep it</h2>
       <ul>
-        <li><strong>Email + user ID:</strong> as long as your account exists; deleted when your account is deleted.</li>
+        <li><strong>Email, name, profile picture link, and user ID:</strong> as long as your account exists; deleted when your account is deleted.</li>
         <li><strong>Everything on your device:</strong> yours — deleting the app deletes it.</li>
-        <li><strong>Cached catalog data:</strong> song facts only, no personal data; YouTube-sourced cache entries expire within 30 days.</li>
+        <li><strong>YouTube data:</strong> never stored on our servers; the app's on-device YouTube cache deletes entries after 30 days.</li>
+        <li><strong>Shared song catalog:</strong> song facts only (like matching Apple Music IDs), no personal data.</li>
       </ul>
 
       <h2 id="deletion">Deleting your account and data</h2>
