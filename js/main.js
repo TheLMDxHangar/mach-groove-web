@@ -34,20 +34,32 @@
     var byId = {};
     sectionLinks.forEach(function (a) { byId[a.getAttribute('data-section')] = a; });
     var visible = {};
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting ? en.intersectionRatio : 0; });
+    // B-0061 (Dom): the last section (Socials) sits at the bottom of the page
+    // and can never scroll up into the middle band the observer watches, so
+    // its link never lit — at the very bottom, the last linked section wins.
+    var lastId = sectionLinks[sectionLinks.length - 1].getAttribute('data-section');
+    function atBottom() {
+      return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    }
+    function paint() {
       var best = null, bestRatio = 0;
       Object.keys(visible).forEach(function (id) {
         if (visible[id] > bestRatio) { bestRatio = visible[id]; best = id; }
       });
+      if (atBottom()) { best = lastId; }
       sectionLinks.forEach(function (a) {
         a.classList.toggle('is-active', a.getAttribute('data-section') === best);
       });
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting ? en.intersectionRatio : 0; });
+      paint();
     }, { rootMargin: '-40% 0px -45% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] });
     Object.keys(byId).forEach(function (id) {
       var el = document.getElementById(id);
       if (el) io.observe(el);
     });
+    window.addEventListener('scroll', paint, { passive: true });
   }
 
   // ---------- Launch alerts form ----------

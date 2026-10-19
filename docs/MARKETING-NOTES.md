@@ -5,7 +5,7 @@ own. Raw input for the "head of marketing" chat prompt. Add as we go.
 
 ## Brand facts (don't re-derive)
 - Product: Mach Groove, iOS, transfers playlists between Spotify / Apple Music / YouTube Music.
-- Company: LMDx Tech. Launch target: Halloween 2026 on the App Store.
+- Company: LMDx Tech. Launch target: Holiday 2026 on the App Store (Thu Nov 19, 2026).
 - Voice: mission-control. BEAM, PAYLOAD, TARGET LOCKED, mission log; the user is "the pilot".
 - Palette: deep space #101026, mach blue rgb(100,210,255), mach pink, mach green, mach flame.
 - Type: Space Grotesk + JetBrains Mono.
