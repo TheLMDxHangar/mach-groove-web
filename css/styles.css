@@ -451,6 +451,12 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   gap: 1.25rem;
 }
 
+/* B-0061: the format row carries all five modes — narrower cells so the
+   five sit on one line on desktop instead of four plus an orphan. */
+.feature-grid--five {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
 .card {
   padding: 1.6rem 1.5rem;
   border-radius: var(--radius);
@@ -465,6 +471,9 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 .card__icon { font-size: 1.6rem; margin-bottom: .9rem; }
 .card__title { font-size: 1.15rem; font-weight: 600; margin-bottom: .5rem; }
+/* B-0061: the mode's name as the app's picker spells it, above the card's
+   headline — "Studio cut" is what SONGS mode does, SONGS is what it's called. */
+.card .card__mode { color: var(--mach-blue); font-size: .7rem; letter-spacing: .14em; margin: 0 0 .35rem; }
 .card p { color: var(--text-dim); font-size: .97rem; margin: 0; }
 .card p + p { margin-top: 1.55rem; }   /* one full line of air between beats */
 
