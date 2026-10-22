@@ -124,25 +124,35 @@
 
   // type: info | success | warning | pilot | dim
   var SCRIPT = [
-    { t: 'dim',     s: '> INITIATING BEAM SEQUENCE',                                       pause: 500 },
-    { t: 'info',    s: 'CARGO: 12 TRACKS DETECTED. CALCULATING BEAM PATH...',              pause: 600 },
-    { t: 'info',    s: 'SCANNING [1/12]: [Crush On You]...',                               pause: 220 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Crush On You]',                                 pause: 260 },
-    { t: 'info',    s: 'SCANNING [2/12]: [I Will Always Love You]...',                     pause: 220 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [I Will Always Love You]',                       pause: 260 },
-    { t: 'info',    s: 'SCANNING [3/12]: [Love Like This]...',                             pause: 220 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Love Like This]',                               pause: 260 },
-    { t: 'dim',     s: '  ···  ',                                                          pause: 300 },
-    { t: 'info',    s: 'SCANNING [12/12]: [Lighters Up]...',                               pause: 400 },
-    { t: 'warning', s: '⚠️ NO MATCH: [Lighters Up]',                                       pause: 500 },
-    { t: 'success', s: 'BEAM CALCULATION COMPLETE. 11 MATCHED. 1 FAILED.',                 pause: 500 },
-    { t: 'warning', s: '⏸️ AWAITING PILOT INPUT — 1 UNRESOLVED TARGET. PAYLOAD HOLDING...', pause: 1200 },
-    { t: 'pilot',   s: '👩🏾‍🚀 PILOT SELECTED: [Lighters Up (feat. Lil\' Kim)]',           pause: 500 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Lighters Up]',                                  pause: 400 },
-    { t: 'info',    s: 'INITIATING FINAL PAYLOAD DROP TO APPLE MUSIC...',                  pause: 900 },
-    { t: 'success', s: '📦 DELIVERY VERIFIED: 12/12 IN PLAYLIST.',                         pause: 400 },
-    { t: 'success', s: '🚀 ALL SONGS ABOARD: [QUEEN BEE MIX] SECURED.',                    pause: 3200 }
+    { t: 'dim',     s: '> INITIATING BEAM SEQUENCE',                                       pause: 500, beam: 'scanning', p: 0.02 },
+    { t: 'info',    s: 'CARGO: 12 TRACKS DETECTED. CALCULATING BEAM PATH...',              pause: 600, p: 0.05 },
+    { t: 'info',    s: 'SCANNING [1/12]: [Crush On You]...',                               pause: 220, p: 0.1 },
+    { t: 'success', s: '🎯 TARGET LOCKED: [Crush On You]',                                 pause: 260, p: 0.15 },
+    { t: 'info',    s: 'SCANNING [2/12]: [I Will Always Love You]...',                     pause: 220, p: 0.22 },
+    { t: 'success', s: '🎯 TARGET LOCKED: [I Will Always Love You]',                       pause: 260, p: 0.28 },
+    { t: 'info',    s: 'SCANNING [3/12]: [Love Like This]...',                             pause: 220, p: 0.34 },
+    { t: 'success', s: '🎯 TARGET LOCKED: [Love Like This]',                               pause: 260, p: 0.4 },
+    { t: 'dim',     s: '  ···  ',                                                          pause: 300, p: 0.6 },
+    { t: 'info',    s: 'SCANNING [12/12]: [Lighters Up]...',                               pause: 400, p: 0.78 },
+    { t: 'warning', s: '⚠️ NO MATCH: [Lighters Up]',                                       pause: 500, p: 0.82 },
+    { t: 'success', s: 'BEAM CALCULATION COMPLETE. 11 MATCHED. 1 FAILED.',                 pause: 500, p: 0.85 },
+    { t: 'warning', s: '⏸️ AWAITING PILOT INPUT — 1 UNRESOLVED TARGET. PAYLOAD HOLDING...', pause: 1200, beam: 'holding', p: 0.85 },
+    { t: 'pilot',   s: '👩🏾‍🚀 PILOT SELECTED: [Lighters Up (feat. Lil\' Kim)]',           pause: 500, beam: 'scanning', p: 0.85 },
+    { t: 'success', s: '🎯 TARGET LOCKED: [Lighters Up]',                                  pause: 400, p: 0.87 },
+    { t: 'info',    s: 'INITIATING FINAL PAYLOAD DROP TO APPLE MUSIC...',                  pause: 900, beam: 'delivering', p: 0.9 },
+    { t: 'success', s: '📦 DELIVERY VERIFIED: 12/12 IN PLAYLIST.',                         pause: 400, beam: 'verified', p: 1.0 },
+    { t: 'success', s: '🚀 ALL SONGS ABOARD: [QUEEN BEE MIX] SECURED.',                    pause: 3200, p: 1.0 }
   ];
+
+  // IV-0048: like the app, the beam is driven by the sequence. `p` is the
+  // progress the rocket's nose rides (it parks at 85% on the pilot hold and
+  // docks at 100%); `beam` sets the ear-cup light (.beam[data-state]).
+  var beam = document.getElementById('beam');
+  function setBeam(line) {
+    if (!beam) return;
+    if (line.beam) beam.setAttribute('data-state', line.beam);
+    if (line.p != null) beam.style.setProperty('--beam-progress', line.p);
+  }
 
   var MAX_VISIBLE = 9;         // lines kept on screen before scrolling old ones off
   var CHAR_MS     = 18;        // typewriter speed
@@ -162,6 +172,7 @@
 
   // Reduced motion: dump the whole log, no typing, no loop.
   if (reduced) {
+    setBeam({ beam: 'verified', p: 1 });
     SCRIPT.forEach(function (line) {
       var el = makeLine(line.t);
       el.textContent = line.s;
@@ -178,12 +189,19 @@
       // loop
       setTimeout(function () {
         log.innerHTML = '';
-        typeLine(0);
+        // Back to the pad without flying backwards across the beam.
+        if (beam) beam.classList.add('beam--reset');
+        setBeam({ beam: 'scanning', p: 0 });
+        setTimeout(function () {
+          if (beam) beam.classList.remove('beam--reset');
+          typeLine(0);
+        }, 50);
       }, 800);
       return;
     }
 
     var line = SCRIPT[index];
+    setBeam(line);
     var el = makeLine(line.t);
     log.appendChild(el);
     el.appendChild(cursor);

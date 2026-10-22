@@ -415,23 +415,34 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   to   { left: 100%; opacity: 0; }
 }
 .beam__rocket {
-  position: absolute; top: 50%; left: 0;
-  width: 39px; height: 26px;               /* 14×7 cells → 2:1-ish, matches the app's 20pt glyph */
-  transform: translate(-50%, -50%);
-  animation: rocket-travel 4.8s ease-in-out infinite;
+  position: absolute; top: 50%;
+  width: 44px; height: 22px;               /* 184×92 units, 2:1 — the app's 20pt glyph */
+  /* IV-0048: the nose rides the mission log's progress (js/main.js), as in the
+     app (B-0032) — never ahead of the head, never hanging off the pad at 0%. */
+  left: max(0px, calc(var(--beam-progress, 0) * 100% - 44px));
+  transform: translateY(-50%);
+  transition: left .6s ease-in-out;
   filter: drop-shadow(0 0 5px var(--mach-flame));
 }
-/* Sprite-style exhaust flicker: the two tip frames alternate every 120 ms. */
-.beam__flame--short { animation: flame-a .24s steps(1) infinite; }
-.beam__flame--long  { animation: flame-b .24s steps(1) infinite; }
-@keyframes flame-a { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-@keyframes flame-b { 0%, 49% { opacity: 0; } 50%, 100% { opacity: 1; } }
-@keyframes rocket-travel {
-  0%   { left: 0;    opacity: 0; }
-  8%   { opacity: 1; }
-  92%  { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
-}
+.beam--reset .beam__rocket { transition: none; }
+/* IV-0048: the ear cups are the transfer-state light, set from the mission log
+   via .beam[data-state] — gold pulse while scanning and delivering, steady
+   orange on a pilot hold, green once verified. Exhaust only while moving. */
+.beam__cup { fill: #34345e; }
+.beam[data-state="scanning"] .beam__cup,
+.beam[data-state="delivering"] .beam__cup { animation: cup-pulse 1.2s ease-in-out infinite; }
+.beam[data-state="holding"]  .beam__cup { fill: var(--mach-flame); }
+.beam[data-state="verified"] .beam__cup { fill: var(--mach-green); }
+.beam[data-state="holding"] .beam__exhaust,
+.beam[data-state="verified"] .beam__exhaust { opacity: 0; }
+@keyframes cup-pulse { 0%, 100% { fill: #34345e; } 50% { fill: #ffd27a; } }
+/* Exhaust: orange equalizer bars, each bouncing on its own beat. */
+.beam__exhaust rect { transform-box: fill-box; transform-origin: center; animation: eq-bounce .5s ease-in-out infinite alternate; }
+.beam__exhaust rect:nth-child(2) { animation-duration: .42s; animation-delay: -.1s; }
+.beam__exhaust rect:nth-child(3) { animation-duration: .58s; animation-delay: -.25s; }
+.beam__exhaust rect:nth-child(4) { animation-duration: .37s; animation-delay: -.05s; }
+.beam__exhaust rect:nth-child(5) { animation-duration: .64s; animation-delay: -.3s; }
+@keyframes eq-bounce { from { transform: scaleY(1); } to { transform: scaleY(.65); } }
 
 /* --------------------------------------------------------------------------
    Features
@@ -697,9 +708,9 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .status-dot, .badge-soon__dot, .hero__logo, .beam__pulse, .beam__rocket, .beam__flame, .cursor { animation: none; }
+  .status-dot, .badge-soon__dot, .hero__logo, .beam__pulse, .beam__cup, .beam__exhaust rect, .cursor { animation: none; }
   .terminal__log { height: auto; }   /* static full log — never clip it */
-  .beam__rocket { left: 50%; opacity: 1; }
-  .beam__flame--long { opacity: 0; }
+  .beam__rocket { transition: none; }
+  .beam[data-state] .beam__cup { fill: var(--mach-green); }   /* the static log ends verified */
   .card, .card:hover { transform: none; transition: none; }
 }

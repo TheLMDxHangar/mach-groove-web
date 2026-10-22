@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261018d">
+  <link rel="stylesheet" href="css/styles.css?v=20261022a">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -107,7 +107,7 @@
               <span class="terminal__title mono">MISSION LOG · SEQ-0042</span>
             </div>
 
-            <div class="beam" aria-hidden="true">
+            <div class="beam" id="beam" data-state="scanning" aria-hidden="true">
               <div class="beam__node beam__node--origin">
                 <img class="beam__logo" src="assets/spotify-icon.svg" alt="" width="34" height="34">
                 <span class="beam__label mono">SPOTIFY</span>
@@ -116,22 +116,28 @@
                 <span class="beam__line"></span>
                 <span class="beam__pulse"></span>
                 <span class="beam__pulse beam__pulse--2"></span>
-                <!-- 8-bit rocket — same 14×7 pixel map as the app's RocketGlyph (IV-0019) -->
-              <svg class="beam__rocket" viewBox="0 0 48 32" shape-rendering="crispEdges" aria-hidden="true">
-                <!-- fins -->
-                <rect x="21" y="5.5" width="3" height="3" fill="#64d2ff"/><rect x="21" y="8.5" width="6" height="3" fill="#64d2ff"/>
-                <rect x="21" y="20.5" width="6" height="3" fill="#64d2ff"/><rect x="21" y="23.5" width="3" height="3" fill="#64d2ff"/>
-                <!-- body + nose, tapered corners -->
-                <rect x="24" y="11.5" width="21" height="9" fill="#eef0ff"/>
-                <rect x="45" y="14.5" width="3" height="3" fill="#eef0ff"/>
-                <rect x="42" y="11.5" width="3" height="3" fill="#101026"/><rect x="42" y="17.5" width="3" height="3" fill="#101026"/>
-                <!-- porthole -->
-                <rect x="33" y="14.5" width="3" height="3" fill="#64d2ff"/>
-                <!-- exhaust: lips + tail, then two alternating tip frames -->
-                <rect x="21" y="11.5" width="3" height="3" fill="#fe8638"/><rect x="21" y="17.5" width="3" height="3" fill="#fe8638"/>
-                <rect x="18" y="14.5" width="6" height="3" fill="#fe8638"/>
-                <g class="beam__flame beam__flame--short"><rect x="15" y="14.5" width="3" height="3" fill="#ffd60a"/></g>
-                <g class="beam__flame beam__flame--long"><rect x="15" y="14.5" width="3" height="3" fill="#fe8638"/><rect x="12" y="14.5" width="3" height="3" fill="#ffd60a"/></g>
+                <!-- IV-0048: DMD-X1, the logo's rocket (mach-groove-logo.svg #rk) turned to fly right —
+                     same paths as the app's RocketGlyph. Silver hull on the dark page; the ear cups
+                     are the transfer-state light, driven by the mission log (js/main.js). -->
+              <svg class="beam__rocket" viewBox="0 0 184 92" aria-hidden="true">
+                <g class="beam__exhaust" fill="#fe8638">
+                  <rect x="31.75" y="33" width="4.5" height="26" rx="1"/>
+                  <rect x="24.75" y="29" width="4.5" height="34" rx="1" opacity=".85"/>
+                  <rect x="17.75" y="35" width="4.5" height="22" rx="1" opacity=".65"/>
+                  <rect x="10.75" y="38" width="4.5" height="16" rx="1" opacity=".45"/>
+                  <rect x="3.75"  y="41" width="4.5" height="10" rx="1" opacity=".3"/>
+                </g>
+                <g transform="translate(104 46) rotate(90)">
+                  <g fill="#c4c2ce">
+                    <path d="M-22,0 L-44,22 L-46,48 L-34,36 L-14,38Z"/><path d="M22,0 L44,22 L46,48 L34,36 L14,38Z"/>
+                    <path d="M-10,56 L-14,64 L14,64 L10,56Z"/><rect x="-12" y="46" width="24" height="10"/>
+                    <path d="M0,-80 C20,-60 26,-20 24,10 C22,30 16,40 12,46 L-12,46 C-16,40 -22,30 -24,10 C-26,-20 -20,-60 0,-80Z"/>
+                  </g>
+                  <circle cx="0" cy="-16" r="12" fill="#101026"/><circle cx="0" cy="-16" r="9" fill="#ffd27a"/>
+                  <path d="M-17,-18 A17,17 0 0 1 17,-18" fill="none" stroke="#34345e" stroke-width="3"/>
+                  <rect class="beam__cup" x="-20" y="-23" width="6" height="14" rx="2" stroke="#101026" stroke-width="1.2"/>
+                  <rect class="beam__cup" x="14" y="-23" width="6" height="14" rx="2" stroke="#101026" stroke-width="1.2"/>
+                </g>
               </svg>
               </div>
               <div class="beam__node beam__node--dest">
@@ -311,6 +317,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20261018" defer></script>
+  <script src="js/main.js?v=20261022a" defer></script>
 </body>
 </html>
