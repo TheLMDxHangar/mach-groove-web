@@ -289,12 +289,12 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   font-size: .85rem; font-weight: 500;
   color: var(--text-dim);
 }
-/* Official service marks, unmodified, on a glow in each service's brand colour. */
+/* Official service marks, unmodified: full color, no glow or other effects
+   (B-0067, YouTube review III.F.2a; the app matches). */
 .service__logo { width: 22px; height: 22px; object-fit: contain; }   /* Spotify min 21px */
-.service__logo--yt { width: 24px; height: 24px; }                      /* YouTube min 24px digital */
-.service--spotify .service__logo { filter: drop-shadow(0 0 6px rgba(0, 255, 120, .55)); }
-.service--apple   .service__logo { filter: drop-shadow(0 0 6px rgba(255, 45, 255, .55)); }
-.service--youtube .service__logo { filter: drop-shadow(0 0 6px rgba(255, 69, 58, .6)); }
+/* YouTube: the icon image is trimmed to its edges, so 24px is the icon itself
+   (min 20dp per YouTube's branding guidelines). */
+.service__logo--yt { width: auto; height: 24px; }
 
 /* Hero visual --------------------------------------------------------------- */
 .hero__visual { position: relative; }
