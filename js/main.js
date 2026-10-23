@@ -133,20 +133,21 @@
     { t: 'info',    s: 'SCANNING [3/12]: [Love Like This]...',                             pause: 220, p: 0.34 },
     { t: 'success', s: '🎯 TARGET LOCKED: [Love Like This]',                               pause: 260, p: 0.4 },
     { t: 'dim',     s: '  ···  ',                                                          pause: 300, p: 0.6 },
-    { t: 'info',    s: 'SCANNING [12/12]: [Lighters Up]...',                               pause: 400, p: 0.78 },
-    { t: 'warning', s: '⚠️ NO MATCH: [Lighters Up]',                                       pause: 500, p: 0.82 },
-    { t: 'success', s: 'BEAM CALCULATION COMPLETE. 11 MATCHED. 1 FAILED.',                 pause: 500, p: 0.85 },
-    { t: 'warning', s: '⏸️ AWAITING PILOT INPUT — 1 UNRESOLVED TARGET. PAYLOAD HOLDING...', pause: 1200, beam: 'holding', p: 0.85 },
-    { t: 'pilot',   s: '👩🏾‍🚀 PILOT SELECTED: [Lighters Up (feat. Lil\' Kim)]',           pause: 500, beam: 'scanning', p: 0.85 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Lighters Up]',                                  pause: 400, p: 0.87 },
-    { t: 'info',    s: 'INITIATING FINAL PAYLOAD DROP TO APPLE MUSIC...',                  pause: 900, beam: 'delivering', p: 0.9 },
+    { t: 'info',    s: 'SCANNING [12/12]: [Lighters Up]...',                               pause: 400, p: 0.74 },
+    { t: 'warning', s: '⚠️ NO MATCH: [Lighters Up]',                                       pause: 500, p: 0.78 },
+    { t: 'success', s: 'BEAM CALCULATION COMPLETE. 11 MATCHED. 1 FAILED.',                 pause: 500, p: 0.82 },
+    { t: 'warning', s: '⏸️ AWAITING PILOT INPUT — 1 UNRESOLVED TARGET. PAYLOAD HOLDING...', pause: 1200, p: 0.86 },
+    { t: 'pilot',   s: '👩🏾‍🚀 PILOT SELECTED: [Lighters Up (feat. Lil\' Kim)]',           pause: 500, p: 0.9 },
+    { t: 'success', s: '🎯 TARGET LOCKED: [Lighters Up]',                                  pause: 400, p: 0.93 },
+    { t: 'info',    s: 'INITIATING FINAL PAYLOAD DROP TO APPLE MUSIC...',                  pause: 900, beam: 'delivering', p: 0.96 },
     { t: 'success', s: '📦 DELIVERY VERIFIED: 12/12 IN PLAYLIST.',                         pause: 400, beam: 'verified', p: 1.0 },
     { t: 'success', s: '🚀 ALL SONGS ABOARD: [QUEEN BEE MIX] SECURED.',                    pause: 3200, p: 1.0 }
   ];
 
   // IV-0048: like the app, the beam is driven by the sequence. `p` is the
-  // progress the rocket's nose rides (it parks at 85% on the pilot hold and
-  // docks at 100%); `beam` sets the ear-cup light (.beam[data-state]).
+  // progress the rocket's nose rides (it docks at 100%; IV-0051: no park on
+  // the pilot-hold lines — Dom wants one smooth flight); `beam` sets the
+  // ear-cup light (.beam[data-state]).
   var beam = document.getElementById('beam');
   function setBeam(line) {
     if (!beam) return;
@@ -157,6 +158,52 @@
   var MAX_VISIBLE = 9;         // lines kept on screen before scrolling old ones off
   var CHAR_MS     = 18;        // typewriter speed
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // IV-0051: the equalizer exhaust (Dom's pick "G"). Each frame the thin fill
+  // runs to the rocket's tail and EQ bars bounce right behind it, fading out
+  // TAIL px back and shading green to blue along the track. The bars rest
+  // while the rocket is parked (pilot hold) or docked, like its own exhaust.
+  var track = beam && beam.querySelector('.beam__track');
+  var rocket = beam && beam.querySelector('.beam__rocket');
+  var fill = beam && beam.querySelector('.beam__fill');
+  var eq = beam && beam.querySelector('.beam__eq');
+  if (track && rocket && fill && eq) {
+    var GAP = 6, TAIL = 110, bars = [];
+    var buildBars = function () {
+      eq.innerHTML = ''; bars = [];
+      var n = Math.ceil(track.clientWidth / GAP) + 1;
+      for (var i = 0; i < n; i++) {
+        var b = document.createElement('i');
+        b.style.left = (i * GAP) + 'px';
+        eq.appendChild(b); bars.push(b);
+      }
+    };
+    var tint = function (f) {   // --mach-green → --mach-blue
+      return 'rgb(' + Math.round(100 * f) + ',' + Math.round(255 - 45 * f) + ',' + Math.round(120 + 135 * f) + ')';
+    };
+    buildBars();
+    window.addEventListener('resize', buildBars);
+    var frame = function (t) {
+      // The rocket is an <svg> (no offsetLeft), so measure it against the track.
+      var w = track.clientWidth;
+      var tailEnd = rocket.getBoundingClientRect().left - track.getBoundingClientRect().left + 6;
+      var state = beam.getAttribute('data-state');
+      var resting = reduced || state === 'holding' || state === 'verified';
+      fill.style.width = Math.max(0, tailEnd) + 'px';
+      for (var i = 0; i < bars.length; i++) {
+        var bx = i * GAP, back = tailEnd - bx, s = bars[i].style;
+        if (resting || bx > tailEnd || back > TAIL) { s.height = '0px'; continue; }
+        var a = 1 - back / TAIL;
+        // Dom: ~13% shorter than the mock-up, so the burst doesn't crowd the rocket.
+        var h = (4 + Math.abs(Math.sin(t / 180 + i * 0.9) * Math.sin(t / 430 + i * 0.37)) * 20 * (0.4 + 0.6 * a)) * 0.87;
+        s.height = h.toFixed(1) + 'px';
+        s.opacity = a.toFixed(2);
+        s.background = tint(Math.min(bx / w, 1));
+      }
+      if (!reduced) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
 
   function makeLine(type) {
     var el = document.createElement('span');
