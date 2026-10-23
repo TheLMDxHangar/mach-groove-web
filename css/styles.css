@@ -384,35 +384,32 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   padding: 1.1rem 6.5rem .4rem 1.1rem; /* right gap clears the floating logo */
 }
 .beam__node { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
-/* Dom (2026-09-05): no rings — the official icon carries the service glow, like the app. */
+/* Dom (2026-09-05): no rings. IV-0051: no glow either — the official icon alone,
+   like the app (B-0067). */
 .beam__logo { width: 34px; height: 34px; object-fit: contain; }
 .beam__node--origin { color: var(--mach-green); }
 .beam__node--dest   { color: var(--mach-pink); }
-.beam__node--origin .beam__logo { filter: drop-shadow(0 0 6px rgba(0, 255, 120, .9)) drop-shadow(0 0 16px rgba(0, 255, 120, .45)); }
-.beam__node--dest   .beam__logo { filter: drop-shadow(0 0 6px rgba(255, 45, 255, .9)) drop-shadow(0 0 16px rgba(255, 45, 255, .45)); }
 .beam__label { font-size: .58rem; color: var(--text-dim); }
 
 .beam__track { position: relative; height: 34px; }
+/* IV-0051 (Dom's pick "G"): a dim track, a thin filled line behind the rocket,
+   and an equalizer exhaust — EQ bars bursting out the back that fade a short
+   way behind. js/main.js sizes the fill and bounces the bars each frame. */
 .beam__line {
   position: absolute; left: 0; right: 0; top: 50%;
   height: 2px; transform: translateY(-50%);
-  background: linear-gradient(90deg, var(--mach-green), var(--mach-blue), var(--mach-pink));
-  opacity: .45;
+  background: #2c2c4a;
 }
-.beam__pulse {
-  position: absolute; top: 50%; left: 0;
-  width: 44px; height: 4px; border-radius: 2px;
-  transform: translateY(-50%);
-  background: linear-gradient(90deg, transparent, var(--mach-blue), transparent);
-  box-shadow: 0 0 12px var(--mach-blue);
-  animation: pulse-travel 2.4s linear infinite;
+.beam__fill {
+  position: absolute; left: 0; top: 50%; width: 0;
+  height: 2px; transform: translateY(-50%);
+  background: linear-gradient(90deg, var(--mach-green), var(--mach-blue));
+  opacity: .6;
 }
-.beam__pulse--2 { animation-delay: 1.2s; }
-@keyframes pulse-travel {
-  from { left: -44px; opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  to   { left: 100%; opacity: 0; }
+.beam__eq { position: absolute; inset: 0; pointer-events: none; }
+.beam__eq i {
+  position: absolute; top: 50%; width: 3px; height: 0;
+  border-radius: 2px; transform: translateY(-50%);
 }
 .beam__rocket {
   position: absolute; top: 50%;
@@ -422,7 +419,6 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   left: max(0px, calc(var(--beam-progress, 0) * 100% - 44px));
   transform: translateY(-50%);
   transition: left .6s ease-in-out;
-  filter: drop-shadow(0 0 5px var(--mach-flame));
 }
 .beam--reset .beam__rocket { transition: none; }
 /* IV-0048: the ear cups are the transfer-state light, set from the mission log
@@ -708,7 +704,7 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .status-dot, .badge-soon__dot, .hero__logo, .beam__pulse, .beam__cup, .beam__exhaust rect, .cursor { animation: none; }
+  .status-dot, .badge-soon__dot, .hero__logo, .beam__cup, .beam__exhaust rect, .cursor { animation: none; }
   .terminal__log { height: auto; }   /* static full log — never clip it */
   .beam__rocket { transition: none; }
   .beam[data-state] .beam__cup { fill: var(--mach-green); }   /* the static log ends verified */
