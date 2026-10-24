@@ -327,16 +327,32 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 
 .terminal__bar {
-  display: flex; align-items: center; gap: .45rem;
+  display: flex; align-items: center; gap: .55rem;
   padding: .7rem .9rem;
   border-bottom: 1px solid rgba(255,255,255,.06);
   background: rgba(255,255,255,.03);
 }
-.terminal__light { width: 10px; height: 10px; border-radius: 50%; }
-.terminal__light--red   { background: #ff5f57; }
-.terminal__light--amber { background: #febc2e; }
-.terminal__light--green { background: #28c840; }
-.terminal__title { margin-left: .5rem; font-size: .68rem; color: var(--text-faint); }
+/* B-0064: the app's terminal header — white tile, amber title, CRUISE chip, green dot. */
+.terminal__tile {
+  font-size: .6rem; font-weight: 600; line-height: 1;
+  padding: .22rem .3rem; border-radius: 4px;
+  background: var(--text); color: var(--deep-space);
+}
+.terminal__title { font-size: .72rem; font-weight: 600; color: var(--mach-amber); letter-spacing: .04em; }
+/* The chip sits beside the title (not far right like the app): the floating
+   logo badge (.hero__logo) owns the terminal's top-right corner. */
+.terminal__chip {
+  margin-left: .35rem;
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .6rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--mach-blue);
+  border: 1px solid var(--mach-blue-a); border-radius: 999px;
+  padding: .16rem .55rem;
+}
+.terminal__chip svg { width: .9em; height: .9em; fill: currentColor; }
+/* PILOT wears the filled chip, as in the app ("you're in it"). */
+.terminal__chip.is-pilot { background: rgba(100, 210, 255, .14); }
+.terminal__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mach-green); }
 
 .terminal__log {
   margin: 0;
@@ -351,19 +367,36 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   flex-direction: column;
   justify-content: flex-end;
   font-size: .8rem;
-  line-height: 1.75;
-  white-space: pre-wrap;
+  line-height: 1.6;
   word-break: break-word;
   color: var(--text-dim);
   letter-spacing: .02em;
 }
-.terminal__log .log-line { flex: none; }
-.log-line { display: block; }
-.log-line--info    { color: var(--mach-blue); }
-.log-line--success { color: var(--mach-green); }
-.log-line--warning { color: var(--mach-amber); }
-.log-line--pilot   { color: var(--mach-pink); }
-.log-line--dim     { color: var(--text-faint); }
+/* B-0064: the app's IV-0053 log. A phase line is prompt · glyph · bold
+   keyword · quieter detail; per-track lines tuck in under their phase, a
+   size smaller; a thin labeled divider opens each phase. The prompt's
+   color is the status, as in the app. */
+.log-row { display: flex; align-items: baseline; gap: .6em; flex: none; margin: .12em 0; color: var(--text); }
+.log-row__arrow { flex: none; font-weight: 700; }
+.log-row__arrow--ok   { color: var(--mach-green); }
+.log-row__arrow--warn { color: var(--mach-amber); }
+.log-row__arrow--err  { color: var(--mach-red); }
+.log-row__arrow--info { color: var(--text-faint); }
+.log-row__glyph { flex: none; width: 1.15em; height: 1.15em; align-self: center; fill: var(--text); }
+.log-row__glyph--wide { height: .6em; }
+.log-row__text { min-width: 0; }
+.log-row__k { font-weight: 600; color: var(--text); }
+.log-row__d { color: var(--text-dim); }
+.log-row--track { padding-left: 1.75em; font-size: .9em; }
+.log-row--track .log-row__d { color: var(--text-dim); letter-spacing: .03em; }
+.log-row--track .log-row__name { color: var(--text); }
+.log-div {
+  display: flex; align-items: center; gap: .7em; flex: none;
+  margin: .6em 0 .1em;
+  font-size: .62rem; font-weight: 600; letter-spacing: .18em;
+  color: var(--text-faint);
+}
+.log-div::after { content: ""; flex: 1; border-top: 1px solid rgba(255,255,255,.1); }
 
 .cursor {
   display: inline-block;
