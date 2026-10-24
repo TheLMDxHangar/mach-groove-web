@@ -122,27 +122,49 @@
   var log = document.getElementById('mission-log');
   if (!log) return;
 
-  // type: info | success | warning | pilot | dim
+  // B-0064: the app's IV-0053 mission log — a real run's wording
+  // (SequenceManager), YouTube Music → Apple Music, Songs mode, Dom's
+  // New Jack Classics playlist. The loop alternates CRUISE (phase lines +
+  // exceptions) and PILOT (every track gets its own line), like tapping
+  // the chip in the app.
+  //   div:   a phase divider
+  //   phase: prompt (a) · glyph (g) · bold keyword (k) · quieter detail (s)
+  //   track: a tucked-in per-track line — caps tag (k) + track name (s)
+  //   scan:  the live tally, counting up in place; exception lines (and in
+  //          PILOT, every lock) print above it, like the app
+  //   pilotOnly: shown in the PILOT loop only
+  // `beam` / `p` drive the rocket (see setBeam).
+  var TRACKS = ['Groove Me', 'Is It Good to You', 'Alright', 'Remember the Time',
+                'Don\u2019t Walk Away', 'Ready or Not', 'Roni'];
   var SCRIPT = [
-    { t: 'dim',     s: '> INITIATING BEAM SEQUENCE',                                       pause: 500, beam: 'scanning', p: 0.02 },
-    { t: 'info',    s: 'CARGO: 12 TRACKS DETECTED. CALCULATING BEAM PATH...',              pause: 600, p: 0.05 },
-    { t: 'info',    s: 'SCANNING [1/12]: [Crush On You]...',                               pause: 220, p: 0.1 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Crush On You]',                                 pause: 260, p: 0.15 },
-    { t: 'info',    s: 'SCANNING [2/12]: [I Will Always Love You]...',                     pause: 220, p: 0.22 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [I Will Always Love You]',                       pause: 260, p: 0.28 },
-    { t: 'info',    s: 'SCANNING [3/12]: [Love Like This]...',                             pause: 220, p: 0.34 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Love Like This]',                               pause: 260, p: 0.4 },
-    { t: 'dim',     s: '  ···  ',                                                          pause: 300, p: 0.6 },
-    { t: 'info',    s: 'SCANNING [12/12]: [Lighters Up]...',                               pause: 400, p: 0.74 },
-    { t: 'warning', s: '⚠️ NO MATCH: [Lighters Up]',                                       pause: 500, p: 0.78 },
-    { t: 'success', s: 'BEAM CALCULATION COMPLETE. 11 MATCHED. 1 FAILED.',                 pause: 500, p: 0.82 },
-    { t: 'warning', s: '⏸️ AWAITING PILOT INPUT — 1 UNRESOLVED TARGET. PAYLOAD HOLDING...', pause: 1200, p: 0.86 },
-    { t: 'pilot',   s: '👩🏾‍🚀 PILOT SELECTED: [Lighters Up (feat. Lil\' Kim)]',           pause: 500, p: 0.9 },
-    { t: 'success', s: '🎯 TARGET LOCKED: [Lighters Up]',                                  pause: 400, p: 0.93 },
-    { t: 'info',    s: 'INITIATING FINAL PAYLOAD DROP TO APPLE MUSIC...',                  pause: 900, beam: 'delivering', p: 0.96 },
-    { t: 'success', s: '📦 DELIVERY VERIFIED: 12/12 IN PLAYLIST.',                         pause: 400, beam: 'verified', p: 1.0 },
-    { t: 'success', s: '🚀 ALL SONGS ABOARD: [QUEEN BEE MIX] SECURED.',                    pause: 3200, p: 1.0 }
+    { kind: 'div',   s: 'HANDSHAKE' },
+    { kind: 'phase', a: 'ok',   g: 'uplink',   k: 'UPLINK',           s: 'YouTube Music \u2192 Apple Music',                                  pause: 500, beam: 'scanning', p: 0.02 },
+    { kind: 'phase', a: 'ok',   g: 'cargo',    k: 'CARGO',            s: '7 tracks from New Jack Classics \u2192 new playlist New Jack Classics', pause: 600, p: 0.05 },
+    { kind: 'div',   s: 'SCAN' },
+    { kind: 'phase', a: 'info', g: 'songs',    k: 'SONGS MODE',       s: 'the same songs, matched on Apple Music',                          pause: 500, p: 0.07 },
+    { kind: 'scan',  p0: 0.08, p1: 0.78, step: 420,
+      notes: { 2: { a: 'warn', k: 'FUZZY MATCH', s: 'Is It Good to You \u2192 Is It Good to You (feat. Tammy Lucas) (88%)', near: true },
+               7: { a: 'err',  k: 'NO SIGNAL',  s: 'Roni', miss: true } } },
+    { kind: 'phase', a: 'ok',   g: 'scan',     k: 'SCAN COMPLETE',    s: '6 matched. 1 failed',                                            pause: 500, p: 0.82 },
+    { kind: 'div',   s: 'HOLD' },
+    { kind: 'phase', a: 'warn', g: 'hold',     k: 'AWAITING PILOT',   s: '1 unresolved target \u00b7 payload holding',                        pause: 1200, p: 0.86 },
+    { kind: 'track', a: 'ok',   k: 'PILOT RESOLVED',                  s: 'Roni \u2192 Roni (Single Version)',                                pause: 600, p: 0.9 },
+    { kind: 'track', a: 'info', k: 'RESOLVED',                        s: 'resuming sequence',                                              pause: 400 },
+    { kind: 'div',   s: 'DELIVERY' },
+    { kind: 'phase', a: 'info', g: 'deliver',  k: 'DELIVERING',       s: '7 tracks to Apple Music\u2026',                                     pause: 700, beam: 'delivering', p: 0.96 },
+    { kind: 'track', a: 'info', k: 'DOCKING',                         s: 'with the Apple Music library\u2026',                               pause: 500, pilotOnly: true },
+    { kind: 'phase', a: 'ok',   g: 'verified', k: 'VERIFIED',         s: '7/7 in playlist',                                                pause: 400, beam: 'verified', p: 1.0 },
+    { kind: 'phase', a: 'ok',   g: 'complete', k: 'MISSION COMPLETE', s: 'New Jack Classics secured \u00b7 all systems stable',                pause: 3200, p: 1.0 }
   ];
+
+  var view = 'cruise';   // flips each loop
+  var chip = document.getElementById('log-chip');
+  var chipLabel = document.getElementById('log-chip-label');
+  function setView(v) {
+    view = v;
+    if (chipLabel) chipLabel.textContent = v === 'pilot' ? 'PILOT' : 'CRUISE';
+    if (chip) chip.classList.toggle('is-pilot', v === 'pilot');
+  }
 
   // IV-0048: like the app, the beam is driven by the sequence. `p` is the
   // progress the rocket's nose rides (it docks at 100%; IV-0051: no park on
@@ -155,7 +177,6 @@
     if (line.p != null) beam.style.setProperty('--beam-progress', line.p);
   }
 
-  var MAX_VISIBLE = 9;         // lines kept on screen before scrolling old ones off
   var CHAR_MS     = 18;        // typewriter speed
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -205,37 +226,128 @@
     requestAnimationFrame(frame);
   }
 
-  function makeLine(type) {
-    var el = document.createElement('span');
-    el.className = 'log-line log-line--' + type;
-    return el;
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function glyph(name) {
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'log-row__glyph' + (name === 'deliver' ? ' log-row__glyph--wide' : ''));
+    var use = document.createElementNS(NS, 'use');
+    use.setAttribute('href', '#lg-' + name);
+    svg.appendChild(use);
+    return svg;
+  }
+  // Builds a line; returns the spans the typewriter fills, in order.
+  function build(line) {
+    if (line.kind === 'div') {
+      var d = el('div', 'log-div', line.s);
+      log.appendChild(d);
+      return { row: d, parts: [] };
+    }
+    var row = el('div', 'log-row' + (line.kind === 'phase' ? '' : ' log-row--track'));
+    row.appendChild(el('span', 'log-row__arrow log-row__arrow--' + line.a, '>'));
+    if (line.kind === 'phase') row.appendChild(glyph(line.g));
+    var text = el('span', 'log-row__text');
+    var k = el('span', line.kind === 'phase' ? 'log-row__k' : 'log-row__d');
+    var rest = el('span', line.kind === 'phase' ? 'log-row__d' : 'log-row__name');
+    text.appendChild(k); text.appendChild(rest);
+    row.appendChild(text);
+    log.appendChild(row);
+    return { row: row, parts: [[k, line.k], [rest, ' ' + line.s]] };
+  }
+  function tallyText(n, locked, near, miss) {
+    var parts = ['\u00b7 ' + locked + ' locked'];
+    if (near) parts.push(near + ' near');
+    if (miss) parts.push(miss + ' miss');
+    return [['SCANNING ' + n + '/' + TRACKS.length, ' ' + parts.join(' \u00b7 ')]];
   }
 
   function trim() {
-    while (log.querySelectorAll('.log-line').length > MAX_VISIBLE) {
-      log.removeChild(log.firstChild);
-    }
+    var MAX_ROWS = 10;   // rows kept before old ones scroll off the top
+    while (log.children.length > MAX_ROWS) log.removeChild(log.firstChild);
   }
 
   // Reduced motion: dump the whole log, no typing, no loop.
   if (reduced) {
     setBeam({ beam: 'verified', p: 1 });
     SCRIPT.forEach(function (line) {
-      var el = makeLine(line.t);
-      el.textContent = line.s;
-      log.appendChild(el);
+      if (line.pilotOnly) return;
+      if (line.kind === 'scan') {
+        Object.keys(line.notes).forEach(function (n) {
+          var b = build({ kind: 'track', a: line.notes[n].a, k: line.notes[n].k, s: line.notes[n].s });
+          b.parts.forEach(function (pt) { pt[0].textContent = pt[1]; });
+        });
+        return;
+      }
+      build(line).parts.forEach(function (pt) { pt[0].textContent = pt[1]; });
     });
     return;
   }
 
-  var cursor = document.createElement('span');
-  cursor.className = 'cursor';
+  var cursor = el('span', 'cursor');
+
+  // Types each [span, text] pair in turn, then calls done.
+  function typeParts(parts, done) {
+    var pi = 0, chars = [], ci = 0;
+    function next() {
+      if (pi >= parts.length) { done(); return; }
+      chars = Array.from(parts[pi][1]); ci = 0;
+      parts[pi][0].appendChild(cursor);
+      tick();
+    }
+    function tick() {
+      var span = parts[pi][0];
+      if (ci < chars.length) {
+        span.insertBefore(document.createTextNode(chars[ci]), cursor);
+        ci++;
+        setTimeout(tick, CHAR_MS);
+      } else { pi++; next(); }
+    }
+    next();
+  }
+
+  // The live tally: one row, rewritten in place each step; exception lines
+  // print above it. Removed when the scan ends, as in the app.
+  function runScan(line, done) {
+    var tally = build({ kind: 'phase', a: 'ok', g: 'scan', k: '', s: '' });
+    var locked = 0, near = 0, miss = 0, n = 0;
+    function step() {
+      n++;
+      var note = line.notes[n];
+      if (note) {
+        if (note.near) near++; else if (note.miss) miss++;
+      } else {
+        locked++;
+        // PILOT shows every lock; CRUISE counts them in the tally only.
+        if (view === 'pilot') note = { a: 'ok', k: 'LOCKED', s: TRACKS[n - 1] };
+      }
+      if (note) {
+        var b = build({ kind: 'track', a: note.a, k: note.k, s: note.s });
+        log.insertBefore(b.row, tally.row);
+        b.parts.forEach(function (pt) { pt[0].textContent = pt[1]; });
+      }
+      var t = tallyText(n, locked, near, miss)[0];
+      tally.parts[0][0].textContent = t[0];
+      tally.parts[1][0].textContent = t[1];
+      setBeam({ p: line.p0 + (line.p1 - line.p0) * n / TRACKS.length });
+      trim();
+      var exception = line.notes[n];
+      if (n < TRACKS.length) setTimeout(step, exception ? line.step * 2 : line.step);
+      else setTimeout(function () { log.removeChild(tally.row); done(); }, 400);
+    }
+    step();
+  }
 
   function typeLine(index) {
     if (index >= SCRIPT.length) {
       // loop
       setTimeout(function () {
         log.innerHTML = '';
+        setView(view === 'cruise' ? 'pilot' : 'cruise');
         // Back to the pad without flying backwards across the beam.
         if (beam) beam.classList.add('beam--reset');
         setBeam({ beam: 'scanning', p: 0 });
@@ -248,26 +360,15 @@
     }
 
     var line = SCRIPT[index];
+    if (line.pilotOnly && view !== 'pilot') { typeLine(index + 1); return; }
+    if (line.kind === 'scan') { runScan(line, function () { typeLine(index + 1); }); return; }
     setBeam(line);
-    var el = makeLine(line.t);
-    log.appendChild(el);
-    el.appendChild(cursor);
+    var built = build(line);
     trim();
-
-    // Split by code point so emoji don't get half-typed.
-    var chars = Array.from(line.s);
-    var i = 0;
-
-    function tick() {
-      if (i < chars.length) {
-        el.insertBefore(document.createTextNode(chars[i]), cursor);
-        i++;
-        setTimeout(tick, CHAR_MS);
-      } else {
-        setTimeout(function () { typeLine(index + 1); }, line.pause);
-      }
-    }
-    tick();
+    if (line.kind === 'div') { setTimeout(function () { typeLine(index + 1); }, 150); return; }
+    typeParts(built.parts, function () {
+      setTimeout(function () { typeLine(index + 1); }, line.pause);
+    });
   }
 
   typeLine(0);
