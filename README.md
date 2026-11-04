@@ -1,6 +1,6 @@
 # mach-groove.app
 
-Marketing landing page for **Mach Groove** — the iOS app that beams playlists between Spotify, Apple Music, and YouTube Music.
+Marketing landing page for **Mach Groove** — the iOS app that launches playlists between Apple Music, YouTube Music, and YouTube.
 
 - Plain static HTML / CSS / JS. No framework, no build step.
 - Deployed via GitHub Pages from the `main` branch root.

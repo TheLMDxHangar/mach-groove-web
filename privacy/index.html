@@ -60,18 +60,18 @@
     <div class="container">
       <p class="eyebrow mono">FLIGHT RULES</p>
       <h1>Privacy Policy</h1>
-      <p class="mono" style="font-size:.75rem;color:var(--text-faint)">EFFECTIVE DATE: SEPTEMBER 11, 2026 · LAST UPDATED: OCTOBER 18, 2026</p>
+      <p class="mono" style="font-size:.75rem;color:var(--text-faint)">EFFECTIVE DATE: SEPTEMBER 11, 2026 · LAST UPDATED: NOVEMBER 4, 2026</p>
 
-      <p>Mach Groove is an iOS app by LMDx Tech that moves playlists between Spotify, Apple Music, YouTube Music, and YouTube — as songs, live versions, karaoke, music videos, or live performance videos. Same playlist, different vibe. This policy says plainly what we collect, where it lives, how long we keep it, and how to delete it. The short version: we collect almost nothing, we track nothing, and we never sell anything.</p>
+      <p>Mach Groove is an iOS app by LMDx Tech that moves playlists between Apple Music, YouTube Music, and YouTube — as songs, live versions, karaoke, music videos, or live performance videos. Same playlist, different vibe. This policy says plainly what we collect, where it lives, how long we keep it, and how to delete it. The short version: we collect almost nothing, we track nothing, and we never sell anything.</p>
 
       <h2 id="what-we-collect">What we collect</h2>
       <p>When you sign in with Apple or Google, we collect only what your account needs:</p>
       <ul>
         <li><strong>Your email address</strong> — so your Mach Groove account exists and we can tell it apart from everyone else's. (With Sign in with Apple, this can be Apple's private relay address.)</li>
-        <li><strong>Your name and profile picture link</strong>, if your sign-in shares them — to label your account in the app.</li>
+        <li><strong>Your name and profile picture link</strong>, if your sign-in shares them — to label your account in the app. You can change the name in <strong>Profile → Edit Profile</strong>.</li>
         <li><strong>A user ID</strong> (a random identifier created for your account when you sign in) — how the app proves to our servers that a request is really yours.</li>
       </ul>
-      <p>That's the whole list. Your playlists and transfers stay on your phone — we don't keep a copy of what you transferred or what's in it.</p>
+      <p>That's the whole list. Your playlists and transfers stay on your phone — we don't keep a copy of what you transferred or what's in it, unless you send us a mission log for support (see below).</p>
 
       <h2 id="what-we-never-collect">What we never collect</h2>
       <ul>
@@ -83,15 +83,15 @@
 
       <h2 id="where-your-data-lives">Where your data lives</h2>
       <ul>
-        <li><strong>On your device:</strong> the sign-in tokens for your connected music services (in the iOS Keychain), your transfer history, lifetime stats, transfer logs, and preferences like theme. None of this leaves your phone unless you choose to send a log to support.</li>
-        <li><strong>On our servers:</strong> your email, name, profile picture link, and user ID, and nothing else.</li>
-        <li><strong>In transit only:</strong> connecting Spotify routes its sign-in exchange through our server so secrets never ship inside the app — the token passes through and is not stored there.</li>
-        <li><strong>Not personal data:</strong> the app reports anonymous song-catalog facts (for example, "this Spotify track ID and this Apple Music ID are the same recording") to make everyone's matches faster. These are facts about songs, not about you.</li>
+        <li><strong>On your device:</strong> the sign-in tokens for your connected music services (in the iOS Keychain), your transfer history, lifetime stats, transfer logs, and preferences like theme. None of this leaves your phone, except a mission log you send to support (below).</li>
+        <li><strong>On our servers:</strong> your email, name, profile picture link, user ID, and the date your account was created; mission logs you send to support (next); and a keyed hash on song-catalog reports (below). Nothing else.</li>
+        <li><strong>Mission logs you send to support:</strong> when you open the support email or share sheet for a mission, the app sends that mission's full log (the playlist and song names, the matches it tried, and the app version) to our servers, tied to your account, so we can see what happened. Only LMDx support can read it, and it's deleted automatically 30 days after it's sent.</li>
+        <li><strong>Shared song catalog:</strong> the app reports song-catalog facts (for example, "this YouTube video and this Apple Music song are the same recording") to make everyone's matches faster. These are facts about songs, not about you. To spot bad or abusive reports, each report is stored with a keyed one-way hash of your user ID, not the ID itself, and not your email or name. We don't store the hash with your account record or use it to identify you, and we delete each report after 30 days.</li>
+        <li><strong>Google Firebase:</strong> the app uses Firebase (from Google) for sign-in, for checking that requests come from the genuine app, and for turning features on or off remotely. To do that, Firebase creates an identifier for this install of the app. It isn't linked to advertising and isn't used to track you.</li>
       </ul>
 
       <h2 id="service-connections">Your music-service connections</h2>
       <ul>
-        <li><strong>Spotify:</strong> authorized via Spotify's own sign-in; the token stays in your device Keychain. Revoke anytime at <a href="https://www.spotify.com/account/apps/" rel="noopener">spotify.com → Account → Apps</a>.</li>
         <li><strong>Apple Music:</strong> authorized through iOS itself (like Camera or Location) — we never hold a credential. Revoke in iOS Settings.</li>
         <li><strong>YouTube Music:</strong> authorized via Google Sign-In on your device. Disconnect anytime in the app.</li>
       </ul>
@@ -122,14 +122,15 @@
 
       <h2 id="retention">How long we keep it</h2>
       <ul>
-        <li><strong>Email, name, profile picture link, and user ID:</strong> as long as your account exists; deleted when your account is deleted.</li>
+        <li><strong>Email, name, profile picture link, user ID, and account creation date:</strong> as long as your account exists; deleted when your account is deleted.</li>
+        <li><strong>Mission logs you send to support:</strong> deleted automatically 30 days after you send them.</li>
         <li><strong>Everything on your device:</strong> yours — deleting the app deletes it.</li>
         <li><strong>YouTube data:</strong> never stored on our servers; the app's on-device YouTube cache deletes entries after 30 days.</li>
-        <li><strong>Shared song catalog:</strong> song facts only (like matching Apple Music IDs), no personal data.</li>
+        <li><strong>Shared song catalog:</strong> song facts (like matching Apple Music IDs) are kept with no personal data. The keyed hash stored with each report is deleted after 30 days, including after you delete your account.</li>
       </ul>
 
       <h2 id="deletion">Deleting your account and data</h2>
-      <p>Delete your account anytime in the app: <strong>Profile → Delete Account</strong>. That deletes your account record (email, user ID) and everything tied to it on our servers, removes Mach Groove's access to your Apple or Google sign-in, and clears the app's data from your phone. Playlists you already created in Apple Music or YouTube stay in those apps.</p>
+      <p>Delete your account anytime in the app: <strong>Profile → Delete Account</strong>. That deletes your account record (email, user ID) and everything tied to it on our servers (except a mission log you sent to support, which is deleted within 30 days of sending), removes Mach Groove's access to your Apple or Google sign-in, and clears the app's data from your phone. Playlists you already created in Apple Music or YouTube stay in those apps.</p>
       <p>Can't get into the app? Email <a href="mailto:support@mach-groove.app">support@mach-groove.app</a> from the address you signed in with and we'll delete your account and confirm when it's done. Deleting the app from your phone also removes everything stored on the device.</p>
 
       <h2 id="launch-alerts">Launch alerts (this website)</h2>

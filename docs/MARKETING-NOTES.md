@@ -4,9 +4,9 @@ Things noticed while building mach-groove.app that a head of marketing needs to
 own. Raw input for the "head of marketing" chat prompt. Add as we go.
 
 ## Brand facts (don't re-derive)
-- Product: Mach Groove, iOS, transfers playlists between Spotify / Apple Music / YouTube Music.
+- Product: Mach Groove, iOS, moves playlists between Apple Music / YouTube Music / YouTube, both ways. Spotify is switched off for launch: don't name it in copy.
 - Company: LMDx Tech. Launch target: Holiday 2026 on the App Store (Thu Nov 19, 2026).
-- Voice: mission-control. BEAM, PAYLOAD, TARGET LOCKED, mission log; the user is "the pilot".
+- Voice: mission-control. LAUNCH (the verb), MISSION (a run), PAYLOAD, TARGET LOCKED, mission log (IV-0064 retired beam, transfer and sequence); the user is "the pilot".
 - Palette: deep space #101026, mach blue rgb(100,210,255), mach pink, mach green, mach flame.
 - Type: Space Grotesk + JetBrains Mono.
 - Mascot motif: rocket + astronaut. The 8-bit rocket = "a transfer is running" everywhere (app + site).
