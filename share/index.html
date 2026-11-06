@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A playlist was shared with you — Mach Groove</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="A pilot shared a playlist with you on Mach Groove.">
+  <meta name="theme-color" content="#101026">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Groove">
+  <meta property="og:title" content="A playlist was shared with you">
+  <meta property="og:description" content="Open it in Mach Groove to move it into your own music app.">
+  <meta property="og:image" content="https://mach-groove.app/assets/og-card.png?v=sky20261023">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mach-groove.app/assets/og-card.png?v=sky20261023">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png?v=sky20261023">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=sky20261023">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../css/styles.css?v=20261023g">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="starfield" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="../" aria-label="Mach Groove home">
+        <img class="brand__mark" src="../assets/logo-circle.png?v=sky20261023" alt="" width="40" height="40">
+        <span class="brand__word">MACH GROOVE</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container">
+      <p class="eyebrow mono">INCOMING CARGO</p>
+      <h1 id="share-title">A playlist was shared with you</h1>
+      <p id="share-detail">Open this link on an iPhone with Mach Groove installed and the playlist lands in New Transfer, ready to launch into your own music app.</p>
+
+      <div class="notice" role="note">
+        <strong>Don't have Mach Groove yet?</strong> It's coming to the App Store for the holidays. <a href="../#launch-alerts">Get launch alerts</a>, then open this link again once it's installed.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer">
+      <div class="footer__brand">
+        <img src="../assets/logo-circle.png?v=sky20261023" alt="" width="28" height="28">
+        <span class="mono">MACH GROOVE</span>
+      </div>
+      <ul class="footer__links">
+        <li><a href="../support/">Support</a></li>
+        <li><a href="../privacy/">Privacy</a></li>
+        <li><a href="../terms/">Terms</a></li>
+      </ul>
+      <p class="footer__copy mono">© 2026 LMDx Tech · All systems nominal.</p>
+    </div>
+  </footer>
+  <script>
+    // IV-0070: the share rides after the # (never sent to this server).
+    // Read just the sender, name and song count to greet the visitor;
+    // untrusted text, so it only ever goes in via textContent.
+    (async () => {
+      try {
+        const frag = location.hash.slice(1);
+        if (!frag || frag.length > 200000 || !("DecompressionStream" in window)) return;
+        let b64 = frag.replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
+        const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+        const p = JSON.parse(await new Response(stream).text());
+        if (p.v !== 1 || typeof p.n !== "string" || typeof p.f !== "string") return;
+        const from = p.f.slice(0, 40), name = p.n.slice(0, 120);
+        const count = Array.isArray(p.t) ? p.t.length : null;
+        document.getElementById("share-title").textContent = `${from} shared “${name}” with you`;
+        if (count) {
+          document.getElementById("share-detail").textContent =
+            `${count} song${count === 1 ? "" : "s"}, ready to launch. Open this link on an iPhone with Mach Groove installed and it lands in New Transfer.`;
+        }
+      } catch (_) { /* keep the generic page */ }
+    })();
+  </script>
+</body>
+</html>

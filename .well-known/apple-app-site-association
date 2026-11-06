@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["TU68L9854D.com.lmdxtech.Mach-Groove"],
+        "components": [
+          { "/": "/share/*", "comment": "IV-0070: a pilot shared a playlist; open it in Mach Groove" },
+          { "/": "/share", "comment": "IV-0070: same, without the trailing slash" }
+        ]
+      }
+    ]
+  }
+}
