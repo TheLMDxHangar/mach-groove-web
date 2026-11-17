@@ -314,99 +314,108 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 
 /* Terminal ------------------------------------------------------------------ */
+/* IV-0085: the app's MissionLogPanel + TerminalLogView, dark mode, 1pt = 1px
+   (SequenceExecutionView.swift, Colors+Ext.swift). App tokens:
+   terminalInk white · inkSecondary / terminalPrompt white 60% · inkTertiary
+   white 40% · hairline white 10% · success #30D158 · warning #FFD60A ·
+   error #FF453A · accent machBlue. SF Mono is the app's face; ui-monospace
+   is SF Mono on Apple devices, JetBrains Mono everywhere else. */
 .terminal {
+  --t-ink:       #fff;
+  --t-secondary: rgba(255,255,255,.60);
+  --t-tertiary:  rgba(255,255,255,.40);
+  --t-hairline:  rgba(255,255,255,.10);
+  --t-success:   #30d158;
+  --t-warning:   #ffd60a;
+  --t-error:     #ff453a;
+  --t-accent:    rgb(100, 210, 255);
+  --t-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "JetBrains Mono", monospace;
   position: relative;
-  border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(22,22,54,.95), rgba(12,12,30,.98));
-  border: 1px solid var(--panel-border);
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,.4),
-    0 30px 60px -20px rgba(0,0,0,.7),
-    0 0 60px -10px var(--mach-blue-a);
+  border-radius: 8px;
+  background: rgba(0,0,0,.40);          /* terminalGround = surfaceRecessed */
+  border: 1px solid var(--t-hairline);
   overflow: hidden;
 }
+.terminal .mono { font-family: var(--t-mono); letter-spacing: 0; }
 
+/* Header: terminal.fill · MISSION_LOG.EXE · CRUISE/PILOT chip · status dot */
 .terminal__bar {
-  display: flex; align-items: center; gap: .55rem;
-  padding: .7rem .9rem;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  background: rgba(255,255,255,.03);
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.05);    /* terminalHeader */
 }
-/* B-0064: the app's terminal header — white tile, amber title, CRUISE chip, green dot. */
+/* Stand-in for the SF Symbol terminal.fill (body size, white). */
 .terminal__tile {
-  font-size: .6rem; font-weight: 600; line-height: 1;
-  padding: .22rem .3rem; border-radius: 4px;
-  background: var(--text); color: var(--deep-space);
+  font-size: 9px; font-weight: 800; line-height: 1;
+  padding: 3px 3px 3px 2px; border-radius: 3px;
+  background: var(--t-ink); color: #101026;
 }
-.terminal__title { font-size: .72rem; font-weight: 600; color: var(--mach-amber); letter-spacing: .04em; }
+.terminal__title { font-size: 11px; font-weight: 700; color: var(--t-warning); }
 /* The chip sits beside the title (not far right like the app): the floating
    logo badge (.hero__logo) owns the terminal's top-right corner. */
 .terminal__chip {
-  margin-left: .35rem;
-  display: inline-flex; align-items: center; gap: .3rem;
-  font-size: .6rem; font-weight: 600; letter-spacing: .06em;
-  color: var(--mach-blue);
-  border: 1px solid var(--mach-blue-a); border-radius: 999px;
-  padding: .16rem .55rem;
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 900; line-height: 1.2;
+  color: var(--t-accent);
+  border: 1px solid rgba(100, 210, 255, .5); border-radius: 999px;
+  padding: 2px 6px;
 }
-.terminal__chip svg { width: .9em; height: .9em; fill: currentColor; }
+.terminal__chip svg { width: 8px; height: 8px; fill: currentColor; }
 /* PILOT wears the filled chip, as in the app ("you're in it"). */
 .terminal__chip.is-pilot { background: rgba(100, 210, 255, .14); }
-.terminal__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mach-green); }
+.terminal__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--t-success); }
 
 .terminal__log {
   margin: 0;
-  padding: 1rem 1.1rem 1.25rem;
+  padding: 12px;
   /* B-0039: FIXED height, not min-height — the box never grows as lines type
-     in or shrinks when the loop restarts, so the hero stops bobbing. Sized
-     for ~11 rendered rows: 9 kept lines plus two that wrap on desktop. New
+     in or shrinks when the loop restarts, so the hero stops bobbing. New
      lines push old ones up like a real terminal. */
-  height: 17.5em;
+  height: 264px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  font-size: .8rem;
-  line-height: 1.6;
-  word-break: break-word;
-  color: var(--text-dim);
-  letter-spacing: .02em;
+  gap: 6px;                             /* VStack spacing: 6 */
+  font-size: 12px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  color: var(--t-ink);
 }
-/* B-0064: the app's IV-0053 log. A phase line is prompt · glyph · bold
-   keyword · quieter detail; per-track lines tuck in under their phase, a
-   size smaller; a thin labeled divider opens each phase. The prompt's
-   color is the status, as in the app. */
-.log-row { display: flex; align-items: baseline; gap: .6em; flex: none; margin: .12em 0; color: var(--text); }
-.log-row__arrow { flex: none; font-weight: 700; }
-.log-row__arrow--ok   { color: var(--mach-green); }
-.log-row__arrow--warn { color: var(--mach-amber); }
-.log-row__arrow--err  { color: var(--mach-red); }
-.log-row__arrow--info { color: var(--text-faint); }
-.log-row__glyph { flex: none; width: 1.15em; height: 1.15em; align-self: center; fill: var(--text); }
-.log-row__glyph--wide { height: .6em; }
+/* IV-0053 line styles. A phase line is prompt · glyph · bold groove command ·
+   quieter detail; a track line tucks in by the glyph column, a size smaller,
+   its command quiet and its track name bright; a labeled hairline opens each
+   phase. The prompt's color is the status. */
+.log-row { display: flex; align-items: baseline; gap: 8px; flex: none; color: var(--t-ink); }
+.log-row__arrow { flex: none; font-weight: 900; }
+.log-row__arrow--ok   { color: var(--t-success); }
+.log-row__arrow--warn { color: var(--t-warning); }
+.log-row__arrow--err  { color: var(--t-error); }
+.log-row__arrow--info { color: var(--t-secondary); }
+.log-row__glyph { flex: none; width: 18px; height: 12px; align-self: flex-start; margin-top: 1px; fill: var(--t-ink); }  /* firstTextBaseline: sits on line one */
+.log-row__glyph--wide { height: 8px; margin-top: 3px; }
 .log-row__text { min-width: 0; }
-.log-row__k { font-weight: 600; color: var(--text); }
-.log-row__d { color: var(--text-dim); }
-.log-row--track { padding-left: 1.75em; font-size: .9em; }
-.log-row--track .log-row__d { color: var(--text-dim); letter-spacing: .03em; }
-.log-row--track .log-row__name { color: var(--text); }
+.log-row__k { font-weight: 700; color: var(--t-ink); }
+.log-row__d { color: var(--t-secondary); }
+.log-row--track { padding-left: 26px; font-size: 11px; }
+.log-row--track .log-row__name { color: var(--t-ink); }
 .log-div {
-  display: flex; align-items: center; gap: .7em; flex: none;
-  margin: .6em 0 .1em;
-  font-size: .62rem; font-weight: 600; letter-spacing: .18em;
-  color: var(--text-faint);
+  display: flex; align-items: center; gap: 8px; flex: none;
+  padding-top: 8px;
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  color: var(--t-tertiary);
 }
-.log-div::after { content: ""; flex: 1; border-top: 1px solid rgba(255,255,255,.1); }
+.log-div::after { content: ""; flex: 1; border-top: .5px solid var(--t-hairline); }
 
+/* The typing line's block: steady (the app's doesn't blink), 6x12, 8 after the text. */
 .cursor {
   display: inline-block;
-  width: .6em; height: 1.05em;
-  background: var(--mach-blue);
-  vertical-align: text-bottom;
-  margin-left: 2px;
-  animation: blink 1s steps(1) infinite;
+  width: 6px; height: 12px;
+  background: var(--t-ink);
+  opacity: .8;
+  vertical-align: -1px;
+  margin-left: 8px;
 }
-@keyframes blink { 50% { opacity: 0; } }
 
 /* Beam diagram -------------------------------------------------------------- */
 .beam {
@@ -728,7 +737,6 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 
 @media (max-width: 480px) {
   .brand__word { display: none; }
-  .terminal__log { font-size: .72rem; }
   .alerts__row { flex-direction: column; }
 }
 
@@ -737,7 +745,7 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .status-dot, .badge-soon__dot, .hero__logo, .beam__cup, .beam__exhaust rect, .cursor { animation: none; }
+  .status-dot, .badge-soon__dot, .hero__logo, .beam__cup, .beam__exhaust rect { animation: none; }
   .terminal__log { height: auto; }   /* static full log — never clip it */
   .beam__rocket { transition: none; }
   .beam[data-state] .beam__cup { fill: var(--mach-green); }   /* the static log ends verified */

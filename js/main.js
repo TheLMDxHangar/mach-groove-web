@@ -122,40 +122,69 @@
   var log = document.getElementById('mission-log');
   if (!log) return;
 
-  // B-0064: the app's IV-0053 mission log — a real run's wording
-  // (SequenceManager), YouTube Music → Apple Music, Songs mode, Dom's
-  // New Jack Classics playlist. The loop alternates CRUISE (phase lines +
-  // exceptions) and PILOT (every track gets its own line), like tapping
-  // the chip in the app.
+  // IV-0085: the app's mission log as it reads today (SequenceManager,
+  // IV-0067): every tag prints as a `groove` command, details end in
+  // --flags. YouTube Music → Apple Music, Songs mode. Tags stay in the app's
+  // caps here and go through grooveCommand() on screen, like the app. The
+  // loop alternates CRUISE (pilot lines) and PILOT (every track gets its
+  // scanning + locked lines), like tapping the chip in the app.
   //   div:   a phase divider
-  //   phase: prompt (a) · glyph (g) · bold keyword (k) · quieter detail (s)
-  //   track: a tucked-in per-track line — caps tag (k) + track name (s)
-  //   scan:  the live tally, counting up in place; exception lines (and in
-  //          PILOT, every lock) print above it, like the app
-  //   pilotOnly: shown in the PILOT loop only
+  //   phase: prompt (a) · glyph (g) · bold command (k) · quieter detail (s)
+  //   track: a tucked-in line — quiet command (k) + bright detail (s)
+  //   scan:  the live tally, counting up in place; exception lines type
+  //          below it and land above it (in PILOT, every track's scanning
+  //          and locked lines land above it too), like the app
   // `beam` / `p` drive the rocket (see setBeam).
-  var TRACKS = ['Groove Me', 'Is It Good to You', 'Alright', 'Remember the Time',
-                'Don\u2019t Walk Away', 'Ready or Not', 'Roni'];
+  // IV-0085: Dom's Grown Folks Gravity (R&B love songs + one gospel), in
+  // his play order. NEAR / MISS pick the scan's near match and the miss the
+  // pilot resolves during the hold (1-based track numbers).
+  var PLAYLIST = 'Grown Folks Gravity';
+  var TRACKS = ['With Each Beat of My Heart', 'You Put a Move on My Heart',
+                'If Only for One Night', 'Jesus Is a Love Song', 'Butterflies',
+                'You Don\u2019t Know My Name', 'Come Over', 'You Give Good Love',
+                'Twenty Foreplay', 'Mystery'];
+  var NEAR = 6, NEAR_AS = ' (Radio Edit)';
+  var MISS = 4, MISS_PICK = ' (Live)';
+  var N = TRACKS.length;
   var SCRIPT = [
     { kind: 'div',   s: 'HANDSHAKE' },
-    { kind: 'phase', a: 'ok',   g: 'uplink',   k: 'UPLINK',           s: 'YouTube Music \u2192 Apple Music',                                  pause: 500, beam: 'scanning', p: 0.02 },
-    { kind: 'phase', a: 'ok',   g: 'cargo',    k: 'CARGO',            s: '7 tracks from New Jack Classics \u2192 new playlist New Jack Classics', pause: 600, p: 0.05 },
+    { kind: 'phase', a: 'info', g: 'uplink',   k: 'UPLINK',           s: 'YouTube Music → Apple Music',                                   pause: 500, beam: 'scanning', p: 0.02 },
+    { kind: 'phase', a: 'info', g: 'cargo',    k: 'CARGO',            s: N + ' tracks · from ' + PLAYLIST + ' → to ' + PLAYLIST + ' --fresh --smooth', pause: 600, p: 0.05 },
     { kind: 'div',   s: 'SCAN' },
-    { kind: 'phase', a: 'info', g: 'songs',    k: 'SONGS MODE',       s: 'the same songs, matched on Apple Music',                          pause: 500, p: 0.07 },
-    { kind: 'scan',  p0: 0.08, p1: 0.78, step: 420,
-      notes: { 2: { a: 'warn', k: 'NEAR MATCH',  s: 'Is It Good to You \u2192 Is It Good to You (feat. Tammy Lucas)', near: true },
-               7: { a: 'err',  k: 'NO SIGNAL',  s: 'Roni', miss: true } } },
-    { kind: 'phase', a: 'ok',   g: 'scan',     k: 'SCAN COMPLETE',    s: '6 matched. 1 failed',                                            pause: 500, p: 0.82 },
+    { kind: 'phase', a: 'info', g: 'songs',    k: 'SONGS MODE',       s: 'same songs → Apple Music --exact --smooth',                     pause: 500, p: 0.07 },
+    { kind: 'scan',  p0: 0.08, p1: 0.78, step: 1100, read: 900,
+      notes: {} },
+    { kind: 'phase', a: 'warn', g: 'scan',     k: 'SCAN COMPLETE',    s: (N - 1) + ' matched · 1 missed --locked-in',                       pause: 500, p: 0.82 },
     { kind: 'div',   s: 'HOLD' },
-    { kind: 'phase', a: 'warn', g: 'hold',     k: 'AWAITING PILOT',   s: '1 unresolved target \u00b7 payload holding',                        pause: 1200, p: 0.86 },
-    { kind: 'track', a: 'ok',   k: 'PILOT RESOLVED',                  s: 'Roni \u2192 Roni (Single Version)',                                pause: 600, p: 0.9 },
-    { kind: 'track', a: 'info', k: 'RESOLVED',                        s: 'resuming mission',                                               pause: 400 },
+    { kind: 'phase', a: 'warn', g: 'hold',     k: 'AWAITING PILOT',   s: '1 song needs your call · cargo holding --hold-your-horses',        pause: 1200, p: 0.86 },
+    { kind: 'track', a: 'ok',   k: 'PILOT RESOLVED',                  s: TRACKS[MISS - 1] + ' → ' + TRACKS[MISS - 1] + MISS_PICK + ' --your-pick',  pause: 600, p: 0.9 },
+    { kind: 'track', a: 'info', k: 'RESOLVED',                        s: '--back-on-course',                                                   pause: 400 },
     { kind: 'div',   s: 'DELIVERY' },
-    { kind: 'phase', a: 'info', g: 'deliver',  k: 'DELIVERING',       s: '7 tracks to Apple Music\u2026',                                     pause: 700, beam: 'delivering', p: 0.96 },
-    { kind: 'track', a: 'info', k: 'DOCKING',                         s: 'with the Apple Music library\u2026',                               pause: 500, pilotOnly: true },
-    { kind: 'phase', a: 'ok',   g: 'verified', k: 'VERIFIED',         s: '7/7 in playlist',                                                pause: 400, beam: 'verified', p: 1.0 },
-    { kind: 'phase', a: 'ok',   g: 'complete', k: 'MISSION COMPLETE', s: 'New Jack Classics secured \u00b7 all systems stable',                pause: 3200, p: 1.0 }
+    { kind: 'phase', a: 'info', g: 'deliver',  k: 'DELIVERING',       s: N + ' tracks → Apple Music --cool-your-jets',                      pause: 700, beam: 'delivering', p: 0.96 },
+    { kind: 'phase', a: 'ok',   g: 'verified', k: 'VERIFIED',         s: N + '/' + N + ' in playlist --wheels-down',                            pause: 400, beam: 'verified', p: 1.0 },
+    { kind: 'phase', a: 'ok',   g: 'complete', k: 'MISSION COMPLETE', s: PLAYLIST + ' landed --smooth-flight',                                  pause: 3200, p: 1.0 }
   ];
+
+  var scanLine = SCRIPT.filter(function (l) { return l.kind === 'scan'; })[0];
+  scanLine.notes[NEAR] = { a: 'warn', k: 'NEAR MATCH', s: TRACKS[NEAR - 1] + ' \u2192 ' + TRACKS[NEAR - 1] + NEAR_AS + ' --close-enough', near: true };
+  scanLine.notes[MISS] = { a: 'err',  k: 'NO SIGNAL',  s: TRACKS[MISS - 1] + ' --not-found', miss: true };
+
+  // GrooveCommand.display: "NEAR MATCH" → "groove near-match",
+  // "SCANNING 3/7" → "groove scanning 3/7" (words up to the first one
+  // with a digit are the command, hyphen-joined, lowercase).
+  function grooveCommand(tag) {
+    var words = tag.split(' ').filter(Boolean), verb = [];
+    while (verb.length < words.length && !/\d/.test(words[verb.length])) verb.push(words[verb.length]);
+    return ['groove', verb.join('-').toLowerCase()].concat(words.slice(verb.length))
+      .filter(Boolean).join(' ');
+  }
+  // GrooveCommand.unbreakFlags: a flag's hyphens go non-breaking (U+2011)
+  // so a flag wraps whole.
+  function unbreakFlags(text) {
+    return text.split(' ').map(function (w) {
+      return w.indexOf('--') === 0 ? w.replace(/-/g, '‑') : w;
+    }).join(' ');
+  }
 
   var view = 'cruise';   // flips each loop
   var chip = document.getElementById('log-chip');
@@ -177,7 +206,8 @@
     if (line.p != null) beam.style.setProperty('--beam-progress', line.p);
   }
 
-  var CHAR_MS     = 18;        // typewriter speed
+  // SequenceManager: 20ms a character, a whole line capped at 1.2s.
+  var CHAR_MS = 20, LINE_MAX_MS = 1200;
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // IV-0051: the equalizer exhaust (Dom's pick "G"). Each frame the thin fill
@@ -257,25 +287,29 @@
     text.appendChild(k); text.appendChild(rest);
     row.appendChild(text);
     log.appendChild(row);
-    return { row: row, parts: [[k, line.k], [rest, ' ' + line.s]] };
+    var detail = line.s ? ' ' + unbreakFlags(line.s) : '';
+    return { row: row, parts: [[k, line.k ? grooveCommand(line.k) : ''], [rest, detail]] };
   }
+  // ScanTally: "groove scanning 3/7" bold, the counts quieter, lowercase.
   function tallyText(n, locked, near, miss) {
     var parts = ['\u00b7 ' + locked + ' locked'];
     if (near) parts.push(near + ' near');
     if (miss) parts.push(miss + ' miss');
-    return [['SCANNING ' + n + '/' + TRACKS.length, ' ' + parts.join(' \u00b7 ')]];
+    return [grooveCommand('SCANNING ' + n + '/' + N), ' ' + parts.join(' \u00b7 ')];
   }
 
+  // Old rows scroll off the top whole: drop any row the box has cut into.
   function trim() {
-    var MAX_ROWS = 10;   // rows kept before old ones scroll off the top
-    while (log.children.length > MAX_ROWS) log.removeChild(log.firstChild);
+    var top = log.getBoundingClientRect().top + 11;   // inside the 12px padding
+    while (log.children.length > 1 && log.firstChild.getBoundingClientRect().top < top) {
+      log.removeChild(log.firstChild);
+    }
   }
 
   // Reduced motion: dump the whole log, no typing, no loop.
   if (reduced) {
     setBeam({ beam: 'verified', p: 1 });
     SCRIPT.forEach(function (line) {
-      if (line.pilotOnly) return;
       if (line.kind === 'scan') {
         Object.keys(line.notes).forEach(function (n) {
           var b = build({ kind: 'track', a: line.notes[n].a, k: line.notes[n].k, s: line.notes[n].s });
@@ -293,8 +327,10 @@
   // Types each [span, text] pair in turn, then calls done.
   function typeParts(parts, done) {
     var pi = 0, chars = [], ci = 0;
+    var total = parts.reduce(function (n, pt) { return n + Array.from(pt[1]).length; }, 0);
+    var ms = Math.min(CHAR_MS, LINE_MAX_MS / Math.max(total, 1));
     function next() {
-      if (pi >= parts.length) { done(); return; }
+      if (pi >= parts.length) { if (cursor.parentNode) cursor.parentNode.removeChild(cursor); done(); return; }
       chars = Array.from(parts[pi][1]); ci = 0;
       parts[pi][0].appendChild(cursor);
       tick();
@@ -304,40 +340,61 @@
       if (ci < chars.length) {
         span.insertBefore(document.createTextNode(chars[ci]), cursor);
         ci++;
-        setTimeout(tick, CHAR_MS);
+        trim();   // a line that wraps as it types pushes the top row off
+        setTimeout(tick, ms);
       } else { pi++; next(); }
     }
     next();
+    // The block stays on the line until it lands, then leaves (as in the app).
   }
 
-  // The live tally: one row, rewritten in place each step; exception lines
-  // print above it. Removed when the scan ends, as in the app.
+  // The live tally: one row, rewritten in place each step. Track lines
+  // type below it and land above it. IV-0085 (Dom): paced so a reader can
+  // take in every song — CRUISE counts one track every `step` ms; PILOT
+  // types each track's scanning + locked lines (the app lands those
+  // silently; on the site they type so they don't pop in from nowhere)
+  // and holds `read` ms on each. Removed when the scan ends, as in the app.
   function runScan(line, done) {
     var tally = build({ kind: 'phase', a: 'ok', g: 'scan', k: '', s: '' });
     var locked = 0, near = 0, miss = 0, n = 0;
-    function step() {
-      n++;
+    function typeAbove(l, then) {
+      var b = build({ kind: 'track', a: l.a, k: l.k, s: l.s });
+      trim();
+      typeParts(b.parts, function () {
+        log.insertBefore(b.row, tally.row);
+        trim();
+        then();
+      });
+    }
+    function paintTally() {
+      var t = tallyText(n, locked, near, miss);
+      tally.parts[0][0].textContent = t[0];
+      tally.parts[1][0].textContent = t[1];
+    }
+    function next() {
+      if (n < N) setTimeout(step, view === 'pilot' ? line.read : line.step);
+      else setTimeout(function () { log.removeChild(tally.row); done(); }, 900);
+    }
+    function verdict() {
       var note = line.notes[n];
       if (note) {
         if (note.near) near++; else if (note.miss) miss++;
-      } else {
-        locked++;
-        // PILOT shows every lock; CRUISE counts them in the tally only.
-        if (view === 'pilot') note = { a: 'ok', k: 'LOCKED', s: TRACKS[n - 1] };
+        paintTally();
+        typeAbove(note, function () { setTimeout(next, view === 'pilot' ? 0 : line.read); });
+        return;
       }
-      if (note) {
-        var b = build({ kind: 'track', a: note.a, k: note.k, s: note.s });
-        log.insertBefore(b.row, tally.row);
-        b.parts.forEach(function (pt) { pt[0].textContent = pt[1]; });
-      }
-      var t = tallyText(n, locked, near, miss)[0];
-      tally.parts[0][0].textContent = t[0];
-      tally.parts[1][0].textContent = t[1];
-      setBeam({ p: line.p0 + (line.p1 - line.p0) * n / TRACKS.length });
+      locked++;
+      paintTally();
+      if (view === 'pilot') typeAbove({ a: 'ok', k: 'LOCKED', s: TRACKS[n - 1] + ' --dialed-in' }, next);
+      else next();
+    }
+    function step() {
+      n++;
+      paintTally();
+      setBeam({ p: line.p0 + (line.p1 - line.p0) * n / N });
       trim();
-      var exception = line.notes[n];
-      if (n < TRACKS.length) setTimeout(step, exception ? line.step * 2 : line.step);
-      else setTimeout(function () { log.removeChild(tally.row); done(); }, 400);
+      if (view === 'pilot') typeAbove({ a: 'info', k: 'SCANNING ' + n + '/' + N, s: TRACKS[n - 1] + ' --tuning-in' }, verdict);
+      else verdict();
     }
     step();
   }
@@ -360,7 +417,6 @@
     }
 
     var line = SCRIPT[index];
-    if (line.pilotOnly && view !== 'pilot') { typeLine(index + 1); return; }
     if (line.kind === 'scan') { runScan(line, function () { typeLine(index + 1); }); return; }
     setBeam(line);
     var built = build(line);
