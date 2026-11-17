@@ -75,6 +75,8 @@
     // break. Lines TYPE in (20ms a character, as in the app) and stack:
     // "groove transmitting" stays on screen and the result types in under
     // it, so a visitor sees both (Dom: "let the user actually experience it").
+    // Each box ticked adds its own line after that: groove android-noted,
+    // groove spotify-noted.
     var motionOK = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var TYPE_MS = 20, HOLD_MS = 900;   // HOLD_MS: least time "transmitting" shows
     var run = 0;                       // a new submit cancels an old line mid-type
@@ -163,7 +165,17 @@
       // The result waits for the first line to finish and hold, then types under it.
       Promise.all([sent, shown]).then(function (res) {
         if (mine !== run) return;
-        if (res[0] === 'ok') { form.reset(); locked(); }
+        if (res[0] === 'ok') {
+          // One more typed line per box ticked, under groove locked (Dom).
+          var wantsAndroid = !!(android && android.checked);
+          var wantsSpotify = !!(spotify && spotify.checked);
+          form.reset();
+          locked().then(function () {
+            if (wantsAndroid && mine === run) return say('ok', 'groove android-noted', 'we\u2019ll ping you when it hits the Play Store --on-deck');
+          }).then(function () {
+            if (wantsSpotify && mine === run) return say('ok', 'groove spotify-noted', 'we\u2019ll ping you when Spotify\u2019s supported --on-deck');
+          });
+        }
         else if (res[0] === 'slow') say('warn', 'groove hold', 'too many tries · wait a few minutes --cool-your-jets');
         else say('err', 'groove transmission-failed', 'try again --retry');
       });
