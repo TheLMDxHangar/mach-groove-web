@@ -69,43 +69,71 @@
   var form = document.getElementById('launch-alerts');
   if (form) {
     var status = form.querySelector('.alerts__status');
-    // IV-0085: every answer is a groove line — tone colors the prompt
-    // (ok green, warn yellow, err red, info gray), the command is bold,
-    // the words quieter; --flags never break across lines.
+    // IV-0085: the form answers like the mission log. Each answer is a
+    // groove line — tone colors the prompt (ok green, warn yellow, err red,
+    // info gray), the command is bold, the words quieter, --flags never
+    // break. Lines TYPE in (20ms a character, as in the app) and stack:
+    // "groove transmitting" stays on screen and the result types in under
+    // it, so a visitor sees both (Dom: "let the user actually experience it").
+    var motionOK = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var TYPE_MS = 20, HOLD_MS = 900;   // HOLD_MS: least time "transmitting" shows
+    var run = 0;                       // a new submit cancels an old line mid-type
+    var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+    var clear = function () { run++; status.textContent = ''; status.className = 'alerts__status mono'; };
     var say = function (tone, cmd, words) {
-      status.className = 'alerts__status mono is-' + tone;
-      status.textContent = '';
+      var mine = run;
+      var row = document.createElement('div');
+      row.className = 'alerts__line is-' + tone;
       var prompt = document.createElement('span');
       prompt.className = 'alerts__prompt';
       prompt.textContent = '>';
       var line = document.createElement('span');
+      row.appendChild(prompt);
+      row.appendChild(line);
+      status.appendChild(row);
+      // [node, text] pairs to type, in order.
       var c = document.createElement('span');
       c.className = 'alerts__cmd';
-      c.textContent = cmd;
       line.appendChild(c);
+      var parts = [[c, cmd]];
       words.split(' ').forEach(function (w) {
-        line.appendChild(document.createTextNode(' '));
-        if (w.indexOf('--') === 0) {
-          var f = document.createElement('span');
-          f.className = 'alerts__flag';
-          f.textContent = w;
-          line.appendChild(f);
-        } else {
-          line.appendChild(document.createTextNode(w));
-        }
+        var n;
+        if (w.indexOf('--') === 0) { n = document.createElement('span'); n.className = 'alerts__flag'; }
+        else { n = document.createElement('span'); }
+        line.appendChild(n);
+        parts.push([n, ' ' + w]);
       });
-      status.appendChild(prompt);
-      status.appendChild(line);
+      if (!motionOK) {
+        parts.forEach(function (p) { p[0].textContent = p[1]; });
+        return Promise.resolve();
+      }
+      var cursor = document.createElement('span');
+      cursor.className = 'alerts__cursor';
+      return new Promise(function (done) {
+        var pi = 0, ci = 0;
+        (function tick() {
+          if (mine !== run) return;
+          if (pi >= parts.length) { if (cursor.parentNode) cursor.parentNode.removeChild(cursor); done(); return; }
+          var node = parts[pi][0], text = Array.from(parts[pi][1]);
+          if (cursor.parentNode !== line) line.appendChild(cursor);
+          if (ci < text.length) { node.textContent += text[ci++]; setTimeout(tick, TYPE_MS); }
+          else { pi++; ci = 0; tick(); }
+        })();
+      });
     };
-    var locked = function () { say('ok', 'groove locked', 'we’ll ping you at launch --countdown'); };
+    var locked = function () { return say('ok', 'groove locked', 'we’ll ping you at launch --countdown'); };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var email = form.querySelector('input[type=email]');
       var android = form.querySelector('input[name=android]');
       var spotify = form.querySelector('input[name=spotify]');
       var honeypot = form.querySelector('input[name=callsign]');
+      clear();
       // Bots fill the hidden field; pretend it worked and drop it on the floor.
-      if (honeypot && honeypot.value) { locked(); return; }
+      if (honeypot && honeypot.value) {
+        say('info', 'groove transmitting', 'your sign-up… --steady').then(function () { return wait(HOLD_MS); }).then(locked);
+        return;
+      }
       if (!email.value || !email.checkValidity()) {
         say('err', 'groove no-signal', 'enter a valid email, pilot');
         email.focus();
@@ -116,8 +144,9 @@
         say('err', 'groove no-uplink', 'sign-ups aren’t connected yet · try again soon');
         return;
       }
-      say('info', 'groove transmitting', 'your sign-up… --steady');
-      fetch(action, {
+      var mine = run;
+      var shown = say('info', 'groove transmitting', 'your sign-up… --steady').then(function () { return wait(HOLD_MS); });
+      var sent = fetch(action, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -128,12 +157,14 @@
           callsign: honeypot ? honeypot.value : ''
         })
       }).then(function (r) {
-        if (r.status === 429) throw new Error('slow');
-        if (!r.ok) throw new Error('bad status');
-        locked();
-        form.reset();
-      }).catch(function (err) {
-        if (err && err.message === 'slow') say('warn', 'groove hold', 'too many tries · wait a few minutes --cool-your-jets');
+        if (r.status === 429) return 'slow';
+        return r.ok ? 'ok' : 'fail';
+      }, function () { return 'fail'; });
+      // The result waits for the first line to finish and hold, then types under it.
+      Promise.all([sent, shown]).then(function (res) {
+        if (mine !== run) return;
+        if (res[0] === 'ok') { form.reset(); locked(); }
+        else if (res[0] === 'slow') say('warn', 'groove hold', 'too many tries · wait a few minutes --cool-your-jets');
         else say('err', 'groove transmission-failed', 'try again --retry');
       });
     });
