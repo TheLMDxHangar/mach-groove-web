@@ -659,9 +659,23 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 .alerts__check input:focus-visible + .alerts__checkbox { outline: 2px solid var(--mach-blue); outline-offset: 2px; }
 .alerts__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-.alerts__status { min-height: 1.2em; margin: .8rem 0 0; font-size: .7rem; color: var(--text-faint); }
-.alerts__status.is-ok { color: var(--mach-green); }
-.alerts__status.is-err { color: var(--mach-amber); }
+/* IV-0085 (Dom's pick B): the form answers in the mission log's voice — a
+   colored prompt, the groove command bold, the words quieter. Same face,
+   size and colors as the terminal's phase lines. */
+.alerts__status {
+  display: flex; align-items: baseline; gap: 8px;
+  min-height: 1.2em; margin: .8rem 0 0;
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "JetBrains Mono", monospace;
+  font-size: 12px; line-height: 1.2; letter-spacing: 0;
+  color: rgba(255,255,255,.6);
+}
+.alerts__prompt { flex: none; font-weight: 900; }
+.alerts__status.is-ok   .alerts__prompt { color: #30d158; }
+.alerts__status.is-warn .alerts__prompt { color: #ffd60a; }
+.alerts__status.is-err  .alerts__prompt { color: #ff453a; }
+.alerts__status.is-info .alerts__prompt { color: rgba(255,255,255,.6); }
+.alerts__cmd { font-weight: 700; color: #fff; }
+.alerts__flag { white-space: nowrap; }   /* a flag wraps whole, like the app */
 
 /* --------------------------------------------------------------------------
    Footer

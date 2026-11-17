@@ -69,32 +69,54 @@
   var form = document.getElementById('launch-alerts');
   if (form) {
     var status = form.querySelector('.alerts__status');
+    // IV-0085: every answer is a groove line — tone colors the prompt
+    // (ok green, warn yellow, err red, info gray), the command is bold,
+    // the words quieter; --flags never break across lines.
+    var say = function (tone, cmd, words) {
+      status.className = 'alerts__status mono is-' + tone;
+      status.textContent = '';
+      var prompt = document.createElement('span');
+      prompt.className = 'alerts__prompt';
+      prompt.textContent = '>';
+      var line = document.createElement('span');
+      var c = document.createElement('span');
+      c.className = 'alerts__cmd';
+      c.textContent = cmd;
+      line.appendChild(c);
+      words.split(' ').forEach(function (w) {
+        line.appendChild(document.createTextNode(' '));
+        if (w.indexOf('--') === 0) {
+          var f = document.createElement('span');
+          f.className = 'alerts__flag';
+          f.textContent = w;
+          line.appendChild(f);
+        } else {
+          line.appendChild(document.createTextNode(w));
+        }
+      });
+      status.appendChild(prompt);
+      status.appendChild(line);
+    };
+    var locked = function () { say('ok', 'groove locked', 'we’ll ping you at launch --countdown'); };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var email = form.querySelector('input[type=email]');
       var android = form.querySelector('input[name=android]');
       var spotify = form.querySelector('input[name=spotify]');
       var honeypot = form.querySelector('input[name=callsign]');
-      status.className = 'alerts__status mono';
       // Bots fill the hidden field; pretend it worked and drop it on the floor.
-      if (honeypot && honeypot.value) {
-        status.textContent = '🎯 TARGET LOCKED. WE\'LL PING YOU AT LAUNCH.';
-        status.classList.add('is-ok');
-        return;
-      }
+      if (honeypot && honeypot.value) { locked(); return; }
       if (!email.value || !email.checkValidity()) {
-        status.textContent = 'ENTER A VALID EMAIL, PILOT.';
-        status.classList.add('is-err');
+        say('err', 'groove no-signal', 'enter a valid email, pilot');
         email.focus();
         return;
       }
       var action = form.getAttribute('action');
       if (!action) {
-        status.textContent = 'UPLINK NOT CONFIGURED YET — TRY AGAIN SOON.';
-        status.classList.add('is-err');
+        say('err', 'groove no-uplink', 'sign-ups aren’t connected yet · try again soon');
         return;
       }
-      status.textContent = 'TRANSMITTING...';
+      say('info', 'groove transmitting', 'your sign-up… --steady');
       fetch(action, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -108,14 +130,11 @@
       }).then(function (r) {
         if (r.status === 429) throw new Error('slow');
         if (!r.ok) throw new Error('bad status');
-        status.textContent = '🎯 TARGET LOCKED. WE\'LL PING YOU AT LAUNCH.';
-        status.className = 'alerts__status mono is-ok';
+        locked();
         form.reset();
       }).catch(function (err) {
-        status.textContent = err && err.message === 'slow'
-          ? 'TOO MANY TRIES — WAIT A FEW MINUTES, PILOT.'
-          : 'TRANSMISSION FAILED — TRY AGAIN.';
-        status.classList.add('is-err');
+        if (err && err.message === 'slow') say('warn', 'groove hold', 'too many tries · wait a few minutes --cool-your-jets');
+        else say('err', 'groove transmission-failed', 'try again --retry');
       });
     });
   }
