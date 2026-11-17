@@ -63,9 +63,9 @@
   }
 
   // ---------- Launch alerts form ----------
-  // GitHub Pages has no backend. Point the form's `action` at a Formspree /
-  // Buttondown endpoint to go live; until then it explains itself instead
-  // of failing silently.
+  // IV-0024: posts to mach-groove-api's POST /launch-alerts (the form's
+  // `action`), which saves one Firestore document per email. The honeypot
+  // goes along too, so the server drops bots even if this script is skipped.
   var form = document.getElementById('launch-alerts');
   if (form) {
     var status = form.querySelector('.alerts__status');
@@ -73,6 +73,7 @@
       e.preventDefault();
       var email = form.querySelector('input[type=email]');
       var android = form.querySelector('input[name=android]');
+      var spotify = form.querySelector('input[name=spotify]');
       var honeypot = form.querySelector('input[name=callsign]');
       status.className = 'alerts__status mono';
       // Bots fill the hidden field; pretend it worked and drop it on the floor.
@@ -100,15 +101,20 @@
         body: JSON.stringify({
           email: email.value,
           platforms: android && android.checked ? ['ios', 'android'] : ['ios'],
-          source: 'mach-groove.app'
+          spotify: !!(spotify && spotify.checked),
+          source: 'mach-groove.app',
+          callsign: honeypot ? honeypot.value : ''
         })
       }).then(function (r) {
+        if (r.status === 429) throw new Error('slow');
         if (!r.ok) throw new Error('bad status');
         status.textContent = '🎯 TARGET LOCKED. WE\'LL PING YOU AT LAUNCH.';
-        status.classList.add('is-ok');
+        status.className = 'alerts__status mono is-ok';
         form.reset();
-      }).catch(function () {
-        status.textContent = 'TRANSMISSION FAILED — TRY AGAIN.';
+      }).catch(function (err) {
+        status.textContent = err && err.message === 'slow'
+          ? 'TOO MANY TRIES — WAIT A FEW MINUTES, PILOT.'
+          : 'TRANSMISSION FAILED — TRY AGAIN.';
         status.classList.add('is-err');
       });
     });

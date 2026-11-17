@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261024b">
+  <link rel="stylesheet" href="css/styles.css?v=iv0085">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -290,7 +290,7 @@
           </ul>
         </div>
 
-        <form class="alerts" id="launch-alerts" action="" method="post" novalidate aria-labelledby="alerts-title">
+        <form class="alerts" id="launch-alerts" action="https://mach-groove-api-1024392051564.us-central1.run.app/launch-alerts" method="post" novalidate aria-labelledby="alerts-title">
           <p class="eyebrow mono">LAUNCH ALERTS</p>
           <h3 id="alerts-title" class="alerts__title">Get pinged when the countdown hits zero.</h3>
           <p class="alerts__lede">One email at launch, maybe one before. No spam, no selling your address.</p>
@@ -304,6 +304,12 @@
             <input type="checkbox" name="android" value="yes">
             <span class="alerts__checkbox" aria-hidden="true"></span>
             <span>I'm on Android — tell me when it's on the Play Store too</span>
+          </label>
+          <!-- IV-0024: Spotify demand signal. Website only: the app says nothing about Spotify while it's switched off. -->
+          <label class="alerts__check">
+            <input type="checkbox" name="spotify" value="yes">
+            <span class="alerts__checkbox" aria-hidden="true"></span>
+            <span>I use Spotify — tell me when it's supported</span>
           </label>
           <!-- Honeypot: bots fill every field; humans never see this one. -->
           <input class="alerts__hp" type="text" name="callsign" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -331,6 +337,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=iv0064" defer></script>
+  <script src="js/main.js?v=iv0085" defer></script>
 </body>
 </html>
