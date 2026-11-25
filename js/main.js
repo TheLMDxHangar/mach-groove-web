@@ -5,6 +5,19 @@
 (function () {
   'use strict';
 
+  // ---------- B-0096: GP's cut-outs ----------
+  // Show each cut-out only once it is fully decoded, so a browser never paints
+  // it half-done (a dark box where his transparent background should be).
+  Array.prototype.forEach.call(document.querySelectorAll('.gp-cutout img'), function (img) {
+    var ready = function () { img.classList.add('is-ready'); };
+    var show = function () {
+      if (!img.naturalWidth) return;                // failed: the AVIF→PNG fallback reloads it
+      if (img.decode) img.decode().then(ready, ready); else ready();
+    };
+    if (img.complete) show();
+    img.addEventListener('load', show);
+  });
+
   // ---------- Nav: hamburger ----------
   var toggle = document.querySelector('.nav__toggle');
   var menu = document.getElementById('nav-menu');

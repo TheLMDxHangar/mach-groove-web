@@ -33,16 +33,16 @@ own. Raw input for the "head of marketing" chat prompt. Add as we go.
 
 ## Content the site already has (reuse, don't rewrite)
 - TAGLINE TRIO (locked 2026-09-10):
-  - Tagline (under the logo, avatars, App Store subtitle candidate): "All songs aboard."  ("All songs abroad" = intentional Easter-egg reading)
+  - Tagline (B-0096, 2026-11-25): "Every playlist deserves a flight plan." Replaced "All songs aboard." (retired; fine as a caption line).
   - Bio line (socials): "Playlists with places to go. No strings attached."
   - Launch-day post: "Cut the strings. Keep the playlists."
-  - App idea: "ALL SONGS ABOARD" as the mission-log line at LAUNCH SEQUENCE (log as a story when Dom wants it)
-  - Hashtag candidate: #AllSongsAboard
-- Hero headline (2026-09-10): "All songs aboard." — replaced "Every song makes the trip." (retired; fine as a caption line)
-- Hero subline (locked 2026-09-11): "Your playlists shouldn't be stuck in one place, or one format. Mach Groove moves them between services in the format you pick and reports what landed, track by track."
-- VOICE: "songs" for the human/emotional lines (All songs aboard), "track" for the technical readout lines — deliberate split. Don't write copy that assumes the user is LEAVING a service; many run two.
+  - Hashtag: #AllSongsAboard retired with the old tagline; no replacement picked yet (Dom decides).
+- Hero headline (B-0096, 2026-11-25): "Every playlist deserves a flight plan." — replaced "All songs aboard." (2026-09-10), which had replaced "Every song makes the trip." Both retired; fine as caption lines.
+- Hero subline (B-0096, 2026-11-25): "Pick the cargo, pick the destination, pick the format. Mach Groove handles the trip and reports what landed, track by track." Old subline ("Your playlists shouldn't be stuck in one place, or one format…") retired from the hero.
+- GP on the site (B-0096): Meet GP card under the hero (full-body mic wink), GP host lines under Local Orbit, Payload Manifest and Flight Plan, GP pointing up at the socials. His lines never call the reader "pilot".
+- VOICE: "songs" for the human/emotional lines, "track" for the technical readout lines — deliberate split. Don't write copy that assumes the user is LEAVING a service; many run two.
 - RULE (Dom, 2026-09-06): never hard-code service names in headline/subline/meta copy — services may be added or lost to API changes. Service names appear only where the icons do (pills, beam, feature cards, FAQ).
-- App Store subtitle (30-char limit): "All songs aboard." (17) is now the lead candidate; "Take your playlists with you." (28) is the fallback.
+- App Store subtitle (30-char limit), as drafted for the 1.0 listing: "Same playlist, different vibe" (29). Backup: "Playlist moves with a groove" (28).
 - App Store description opener: "Your playlists shouldn't be stuck in one place, or one format."
 - Features section title (locked 2026-09-09): "Moves your music. Keeps the receipts." Dom's favourite line so far — strong social-bio / ad-copy candidate.
 - VOICE RULE (Dom): don't address the reader as "pilot"/"commander" in marketing copy — corny. Mission-control words are fine as labels (PAYLOAD MANIFEST, BEAM SEQUENCE); the sentences stay plain and human.

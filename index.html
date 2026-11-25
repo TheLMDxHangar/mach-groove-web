@@ -3,24 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mach Groove — All songs aboard</title>
+  <title>Mach Groove — Every playlist deserves a flight plan</title>
   <link rel="canonical" href="https://mach-groove.app/">
-  <meta name="description" content="Your playlists shouldn't be stuck in one place, or one format. Mach Groove moves them between services in the format you pick and reports what landed, track by track. Coming to the App Store.">
+  <meta name="description" content="Pick the cargo, pick the destination, pick the format. Mach Groove moves your playlists between services and reports what landed, track by track. Coming to the App Store.">
   <meta name="theme-color" content="#101026">
   <meta name="color-scheme" content="dark">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mach Groove">
-  <meta property="og:title" content="Mach Groove — All songs aboard">
+  <meta property="og:title" content="Mach Groove — Every playlist deserves a flight plan">
   <meta property="og:description" content="Playlists with places to go. No strings attached. Coming to iOS, Holiday 2026.">
   <meta property="og:url" content="https://mach-groove.app/">
-  <meta property="og:image" content="https://mach-groove.app/assets/og-card.png?v=sky20261023">
+  <meta property="og:image" content="https://mach-groove.app/assets/og-card.png?v=b0096">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Mach Groove — All songs aboard. Coming to iOS, T-minus Holiday 2026.">
+  <meta property="og:image:alt" content="Mach Groove — Every playlist deserves a flight plan. Coming to iOS, T-minus Holiday 2026.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://mach-groove.app/assets/og-card.png?v=sky20261023">
+  <meta name="twitter:image" content="https://mach-groove.app/assets/og-card.png?v=b0096">
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=sky20261023">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png?v=sky20261023">
@@ -29,7 +29,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=iv0085d">
+  <link rel="stylesheet" href="css/styles.css?v=b0096g">
+  <!-- B-0096: lets the CSS hold GP's cut-outs back until they are fully decoded (no flash of a dark box). -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -39,7 +41,7 @@
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="./" aria-label="Mach Groove home">
-        <img class="brand__mark" src="assets/logo-circle.png?v=sky20261023" alt="" width="40" height="40">
+        <picture><source srcset="assets/logo-circle.webp?v=b0096" type="image/webp"><img class="brand__mark" src="assets/logo-circle.png?v=sky20261023" alt="" width="40" height="40"></picture>
         <span class="brand__word">MACH GROOVE</span>
       </a>
       <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
@@ -70,11 +72,11 @@
             SYSTEMS NOMINAL · T-MINUS HOLIDAY 2026
           </p>
           <h1 id="hero-title" class="hero__title">
-            All songs aboard.
+            Every playlist deserves a flight plan.
           </h1>
           <p class="hero__lede">
-            Your playlists shouldn't be stuck in one place, or one format. Mach Groove moves
-            them between services in the format you pick and reports what landed, track by track.
+            Pick the cargo, pick the destination, pick the format. Mach Groove handles
+            the trip and reports what landed, track by track.
           </p>
 
           <div class="hero__cta">
@@ -113,10 +115,11 @@
           </defs></svg>
         <div class="hero__visual">
           <div class="terminal" role="img" aria-label="Animated mission log: the Grown Folks Gravity playlist launched from YouTube Music to Apple Music in Songs mode, alternating the cruise summary and the full pilot view. Uplink, cargo loaded, ten tracks scanned, one near match, the pilot resolving one, delivery verified, mission complete.">
-            <!-- B-0064: the app's own header — terminal tile, MISSION_LOG.EXE, CRUISE chip, status dot. -->
+            <!-- B-0064: the app's own header — terminal tile, log title, CRUISE chip, status dot.
+                 B-0096: the title follows the app's B-0097 rename, MISSION_LOG.EXE → GROOVE.LOG. -->
             <div class="terminal__bar" aria-hidden="true">
               <span class="terminal__tile mono">&gt;_</span>
-              <span class="terminal__title mono">MISSION_LOG.EXE</span>
+              <span class="terminal__title mono">GROOVE.LOG</span>
               <span class="terminal__chip mono" id="log-chip"><svg><use href="#lg-eye"/></svg><span id="log-chip-label">CRUISE</span></span>
               <span class="terminal__dot"></span>
             </div>
@@ -162,7 +165,37 @@
 
             <div class="terminal__log mono" id="mission-log" aria-hidden="true"></div>
           </div>
-          <img class="hero__logo" src="assets/logo-wordmark.png?v=sky20261023" alt="" width="500" height="500" aria-hidden="true">
+          <picture><source srcset="assets/logo-wordmark.webp?v=b0096" type="image/webp"><img class="hero__logo" src="assets/logo-wordmark.png?v=sky20261023" alt="" width="500" height="500" aria-hidden="true"></picture>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MEET GP (B-0096) ============ -->
+    <!-- GP, the Groove Pilot: the app's mascot (IV-0055 coach tips, B-0095 splash).
+         Art is the ringed B-0099 mic wink, cut from the FINAL with drafts/marketing/gp/tools. -->
+    <section class="meet-gp" id="gp" aria-labelledby="gp-title">
+      <div class="container">
+        <div class="meet">
+          <div class="meet__art gp-cutout">
+            <picture>
+              <source srcset="assets/gp/gp-wink-full.webp" type="image/webp">
+              <img src="assets/gp/gp-wink-full.png" alt="GP, the Groove Pilot, in a burgundy velvet suit and gold aviators, holding a mic and winking" width="513" height="900" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}">
+            </picture>
+          </div>
+          <div class="meet__body">
+            <p class="eyebrow mono">YOUR GROOVE PILOT</p>
+            <h2 id="gp-title" class="section-title">Meet GP.</h2>
+            <p>Kick back, baby. There's only one cat cool enough to fly this ship, and that's GP. He's at the controls on every mission, searching the destination for every song on your playlist and tracking down the exact version you want: same artist, original version, explicit, or clean, your call. Then he lands it smooth as a slow jam, just how you requested.</p>
+            <p>You're still running the show. When a song's too close to call, GP eases the mission into a holding pattern and lets you make the call.</p>
+            <p>New on board? He'll walk you through the app, one easy tip at a time.</p>
+            <p class="meet__quote">
+              <span class="gp-face" aria-hidden="true"><span class="gp-face__pair">
+                <picture><source srcset="assets/gp/gp-face-wink.webp" type="image/webp"><img src="assets/gp/gp-face-wink.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+                <picture class="gp-face__open"><source srcset="assets/gp/gp-face.webp" type="image/webp"><img src="assets/gp/gp-face.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+              </span></span>
+              <q>Welcome aboard, pilot. I'm GP, your Groove Pilot. Let me show you around.</q>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -173,6 +206,14 @@
         <p class="eyebrow mono">LOCAL ORBIT</p>
         <h2 id="flip-title" class="section-title">One service is plenty.</h2>
         <p class="flip__lede">No second subscription required. Pick one of five modes and Mach Groove rebuilds a playlist right where it lives — same service, whole new format.</p>
+        <!-- B-0096: GP's host line, his winking face from the app's coach tips. -->
+        <p class="gp-line">
+          <span class="gp-face" aria-hidden="true"><span class="gp-face__pair">
+            <picture><source srcset="assets/gp/gp-face-wink.webp" type="image/webp"><img src="assets/gp/gp-face-wink.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+            <picture class="gp-face__open"><source srcset="assets/gp/gp-face.webp" type="image/webp"><img src="assets/gp/gp-face.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+          </span></span>
+          <span class="gp-line__say"><span class="gp-line__who mono">GP · GROOVE PILOT</span>Same playlist, five ways to play it. Pick one. I'll handle the rest.</span>
+        </p>
 
         <div class="feature-grid feature-grid--five">
           <article class="card">
@@ -219,6 +260,14 @@
       <div class="container">
         <p class="eyebrow mono">PAYLOAD MANIFEST</p>
         <h2 id="features-title" class="section-title">Moves your music. Keeps the receipts.</h2>
+        <!-- B-0096: GP's line on the receipts. -->
+        <p class="gp-line">
+          <span class="gp-face" aria-hidden="true"><span class="gp-face__pair">
+            <picture><source srcset="assets/gp/gp-face-wink.webp" type="image/webp"><img src="assets/gp/gp-face-wink.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+            <picture class="gp-face__open"><source srcset="assets/gp/gp-face.webp" type="image/webp"><img src="assets/gp/gp-face.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+          </span></span>
+          <span class="gp-line__say"><span class="gp-line__who mono">GP · GROOVE PILOT</span>Right version, every song. And I count what actually lands.</span>
+        </p>
 
         <div class="feature-grid">
           <article class="card">
@@ -253,6 +302,14 @@
       <div class="container">
         <p class="eyebrow mono">FLIGHT PLAN</p>
         <h2 id="how-title" class="section-title">Connect. Pick. Launch.</h2>
+        <!-- B-0096: GP's line on the flight plan. -->
+        <p class="gp-line">
+          <span class="gp-face" aria-hidden="true"><span class="gp-face__pair">
+            <picture><source srcset="assets/gp/gp-face-wink.webp" type="image/webp"><img src="assets/gp/gp-face-wink.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+            <picture class="gp-face__open"><source srcset="assets/gp/gp-face.webp" type="image/webp"><img src="assets/gp/gp-face.png" alt="" width="152" height="160" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}"></picture>
+          </span></span>
+          <span class="gp-line__say"><span class="gp-line__who mono">GP · GROOVE PILOT</span>You pick it, I fly it. Nothing moves till you say go.</span>
+        </p>
 
         <ol class="steps">
           <li class="step">
@@ -281,6 +338,7 @@
           <p class="eyebrow mono">SOCIALS · ON THE AIR</p>
           <h2 id="socials-title" class="section-title">Come see what's shaking.</h2>
           <!-- Live handles (IV-0028). A chip stays aria-disabled until its profile exists. -->
+          <div class="socials__chips">
           <ul class="social-list">
             <li><a class="social" href="https://www.instagram.com/machgroove/" target="_blank" rel="noopener noreferrer me" data-platform="instagram"><span class="social__icon" aria-hidden="true"></span><span class="mono">INSTAGRAM</span><span class="social__handle">@machgroove</span></a></li>
             <li><a class="social" href="https://www.threads.com/@machgroove" target="_blank" rel="noopener noreferrer me" data-platform="threads"><span class="social__icon" aria-hidden="true"></span><span class="mono">THREADS</span><span class="social__handle">@machgroove</span></a></li>
@@ -288,6 +346,14 @@
             <li><a class="social" href="https://www.tiktok.com/@machgroove" target="_blank" rel="noopener noreferrer me" data-platform="tiktok"><span class="social__icon" aria-hidden="true"></span><span class="mono">TIKTOK</span><span class="social__handle">@machgroove</span></a></li>
             <li><a class="social" href="https://www.facebook.com/profile.php?id=61594497351598" target="_blank" rel="noopener noreferrer me" data-platform="facebook"><span class="social__icon" aria-hidden="true"></span><span class="mono">FACEBOOK</span><span class="social__handle">Mach Groove</span></a></li>
           </ul>
+          <!-- B-0096: GP points up at the socials, in the empty space under the chips (desktop); under them on a phone. -->
+          <div class="socials__gp gp-cutout" aria-hidden="true">
+            <picture>
+              <source srcset="assets/gp/gp-point-up.webp" type="image/webp">
+              <img src="assets/gp/gp-point-up.png" alt="" width="574" height="900" onerror="var p=this.parentNode,s=p.querySelector('source');if(s){s.remove();this.src=this.src;}">
+            </picture>
+          </div>
+          </div>
         </div>
 
         <form class="alerts" id="launch-alerts" action="https://mach-groove-api-1024392051564.us-central1.run.app/launch-alerts" method="post" novalidate aria-labelledby="alerts-title">
@@ -323,7 +389,7 @@
   <footer class="site-footer">
     <div class="container footer">
       <div class="footer__brand">
-        <img src="assets/logo-circle.png?v=sky20261023" alt="" width="28" height="28">
+        <picture><source srcset="assets/logo-circle.webp?v=b0096" type="image/webp"><img src="assets/logo-circle.png?v=sky20261023" alt="" width="28" height="28"></picture>
         <span class="mono">MACH GROOVE</span>
       </div>
       <ul class="footer__links">
@@ -337,6 +403,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=iv0085d" defer></script>
+  <script src="js/main.js?v=b0096d" defer></script>
 </body>
 </html>
