@@ -724,9 +724,106 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 
 /* --------------------------------------------------------------------------
+   Meet GP (B-0096) — the Groove Pilot, right under the hero
+   -------------------------------------------------------------------------- */
+.meet-gp { padding: clamp(1rem, 3vw, 2rem) 0 0; }
+
+.meet {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: end;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem) 0 clamp(.5rem, 2vw, 1.5rem);
+  border-radius: 20px;
+  border: 1px solid var(--panel-border);
+  /* Dom (B-0096): the dashed amber ring from the preview stays on the card. */
+  outline: 2px dashed var(--mach-amber);
+  outline-offset: 6px;
+  background:
+    radial-gradient(480px 320px at 22% 100%, rgba(100, 210, 255, .13), transparent 70%),
+    var(--panel);
+  overflow: hidden;
+}
+
+/* GP stands on the card's bottom edge; his cut-off legs fade into it (baked into the image). */
+/* B-0096 (Dom): GP fills the card's height, head near the top, so he sits
+   level with the text instead of low in the card. The picture is out of the
+   flow, so his image never makes the card taller than its text. */
+.meet__art { position: relative; align-self: stretch; min-height: 320px; }
+.meet__art picture { position: absolute; inset: 1.75rem 0 0; display: block; }
+/* The fade at his legs is baked into the image's own transparency (no CSS
+   mask: masked images drew a dark box behind him in some browsers). */
+.meet__art img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+.meet__body { padding: clamp(2rem, 4vw, 3rem) 0; }
+.meet__body .section-title { margin-bottom: 1.1rem; }
+.meet__body p:not(.eyebrow) { color: var(--text-dim); max-width: 52ch; }
+.meet__quote { display: flex; align-items: center; gap: .8rem; margin: 1.5rem 0 0; }
+.meet__quote q { color: var(--text); font-size: .97rem; line-height: 1.45; padding-left: .9rem; border-left: 2px solid var(--mach-blue); quotes: "\201C" "\201D"; }
+.meet__quote .gp-face { --gp-face: 48px; }
+
+/* GP's face, winking the way the app's coach tips do (CoachMarkOverlay):
+   the wink frame sits under the open one; every 2.46 s the open frame drops
+   out for 0.26 s (winkHold), 2.2 s apart (winkGap), with a small head tilt. */
+.gp-face {
+  --gp-face: 60px;
+  position: relative; flex: none;
+  width: var(--gp-face); height: var(--gp-face);
+  border-radius: 50%; overflow: hidden;
+  border: 2px solid var(--mach-blue);
+  background: #1b1b3d;
+}
+.gp-face__pair, .gp-face picture { position: absolute; inset: 0; }
+.gp-face img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.gp-face__pair { animation: gp-tilt 2.46s .6s infinite; }
+.gp-face__open { animation: gp-wink 2.46s .6s infinite; }
+@keyframes gp-wink { 0%, 10.5% { opacity: 0; } 10.6%, 100% { opacity: 1; } }
+@keyframes gp-tilt { 0%, 10.5% { transform: rotate(-4deg); } 10.6%, 100% { transform: rotate(0); } }
+
+/* GP's host line in the five-modes section: his face + a bubble pointing at him. */
+.gp-line { display: flex; align-items: center; gap: .9rem; width: fit-content; max-width: 100%; margin: 0 0 2rem; }
+.gp-line__say {
+  position: relative;
+  padding: .7rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--panel-border);
+  background: rgba(16, 16, 38, .92);
+  color: var(--text);
+  line-height: 1.4;
+}
+.gp-line__say::before {
+  content: ""; position: absolute; left: -7px; top: 50%;
+  width: 12px; height: 12px; margin-top: -6px;
+  background: inherit;
+  border-left: 1px solid var(--panel-border); border-bottom: 1px solid var(--panel-border);
+  transform: rotate(45deg);
+}
+.gp-line__who { display: block; color: var(--mach-blue); font-size: .65rem; letter-spacing: .12em; margin-bottom: .15rem; }
+.section-title + .gp-line { margin-top: -1rem; }   /* sits close under a title, like the lede does */
+
+/* GP pointing up at the social chips, standing in the empty space under them.
+   Out of the flow, so the section keeps its height; his legs fade out. */
+.socials__chips { position: relative; }
+.socials__gp {
+  position: absolute; z-index: 0; pointer-events: none;
+  left: min(340px, calc(100% - 130px)); top: calc(100% - 34px);
+  height: 190px;
+}
+.socials__gp picture { display: block; height: 100%; }
+.socials__gp img { height: 100%; width: auto; max-width: none; }   /* never squeezed by a narrow column; fade is in the image */
+.social-list { position: relative; z-index: 1; }
+/* Cut-outs wait, hidden, until js/main.js has seen them fully decoded. */
+.js .gp-cutout img { opacity: 0; transition: opacity .35s ease; }
+.js .gp-cutout img.is-ready { opacity: 1; }
+/* Safety net: if the script never runs, show him anyway after 3 s. */
+.js .gp-cutout img:not(.is-ready) { animation: gp-reveal 0s 3s forwards; }
+@keyframes gp-reveal { to { opacity: 1; } }
+
+/* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 860px) {
+  /* One column: he stands under the chips in the flow, pointing up at them. */
+  .socials__gp { position: static; height: 170px; margin: .75rem 0 -2rem clamp(1.5rem, 18vw, 6rem); }
   .hero__grid { grid-template-columns: 1fr; }
   .socials__grid { grid-template-columns: 1fr; }
   .hero__visual { order: 2; }
@@ -736,6 +833,14 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
 }
 
 @media (max-width: 720px) {
+  .meet { grid-template-columns: 1fr; gap: 0; padding: 0 1.25rem; }
+  .meet__art { height: 280px; min-height: 0; align-self: auto; order: -1; }
+  .meet__art picture { top: 1rem; }
+  .meet__body { padding: .5rem 0 1.75rem; }
+  .gp-line { align-items: flex-start; }
+  .gp-line .gp-face { --gp-face: 52px; }
+  .gp-line__say { font-size: .95rem; }
+  .gp-line__say::before { top: 22px; }
   .nav__toggle { display: flex; }
   .nav__menu {
     position: absolute; left: 0; right: 0; top: 100%;
@@ -767,4 +872,6 @@ h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
   .beam__rocket { transition: none; }
   .beam[data-state] .beam__cup { fill: var(--mach-green); }   /* the static log ends verified */
   .card, .card:hover { transform: none; transition: none; }
+  .gp-face__pair, .gp-face__open { animation: none; }   /* GP holds still, eyes open */
+  .js .gp-cutout img { transition: none; }
 }

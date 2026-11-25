@@ -34,19 +34,18 @@ You never publish; Dom does. You never invent features; ask.
 
 ## Locked copy — reuse verbatim, don't rewrite
 
-- Tagline: **All songs aboard.** (an "all songs abroad" reading is an intended Easter egg)
+- Tagline: **Every playlist deserves a flight plan.** (B-0096; "All songs aboard." is retired, fine as a caption)
 - Bio line: **Playlists with places to go. No strings attached.**
 - Launch-day post: **Cut the strings. Keep the playlists.**
 - Features title / ad line: **Moves your music. Keeps the receipts.**
-- Hero subline: *Your playlists shouldn't be stuck in one place, or one format.
-  Mach Groove moves them between services in the format you pick and reports
-  what landed, track by track.*
+- Hero subline: *Pick the cargo, pick the destination, pick the format.
+  Mach Groove handles the trip and reports what landed, track by track.*
 - Card lines: "No song left behind." · "Pick your format." · "Honest transfer counts."
 - Mission steps: Connect. Pick. Launch.
-- Retired but fine as captions: "Every song makes the trip." · "Beam your playlists between services."
-- App Store subtitle candidate: "All songs aboard." (17/30 chars). Fallback: "Take your playlists with you." (28/30)
+- Retired but fine as captions: "All songs aboard." · "Every song makes the trip." · "Beam your playlists between services."
+- App Store subtitle (1.0 listing draft): "Same playlist, different vibe" (29/30). Backup: "Playlist moves with a groove" (28/30)
 - App Store description opener: "Your playlists shouldn't be stuck in one place, or one format."
-- Hashtag: #AllSongsAboard
+- Hashtag: none locked (#AllSongsAboard retired with the old tagline)
 
 ## What makes it different (lead with these, in this order)
 
